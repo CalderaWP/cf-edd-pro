@@ -5,17 +5,10 @@
  */
 add_action( 'plugins_loaded', function(){
 	include __DIR__ . '/vendor/autoload.php';
+	( new \calderawp\cfedd\edd\init() )->init_processors();
 }, 2 );
 
 
-/**
- * Add bundle builder processor to Caldera Forms
- *
- * @since 0.0.1
- */
-add_filter( 'caldera_forms_pre_load_processors', function() {
-	\calderawp\cfedd\cf\init::create_processor();
-});
 
 
 

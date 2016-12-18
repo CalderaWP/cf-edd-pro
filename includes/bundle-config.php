@@ -8,4 +8,4 @@
  * @link
  * @copyright 2016 CalderaWP LLC
  */
-echo Caldera_Forms_Processor_UI::config_fields( \calderawp\cfedd\cf\init::processor_fields() );
+echo Caldera_Forms_Processor_UI::config_fields( \calderawp\cfedd\cf\init\bundler::processor_fields() );

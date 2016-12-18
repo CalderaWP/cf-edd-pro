@@ -9,10 +9,12 @@
  * @copyright 2016 CalderaWP LLC
  */
 
-namespace calderawp\cfedd\cf;
+namespace calderawp\cfedd\cf\init;
 
 
-class init {
+use calderawp\cfedd\cf\interfaces\init;
+
+class bundler implements init{
 
 	/**
 	 * The slug for this processor
@@ -33,7 +35,7 @@ class init {
 	 * @param null $form_id Optional. Form ID - used in admin - will be pulled from URL if not passed.
 	 */
 	public static function create_processor( $form_id = null ) {
-		new processor( self::processor_config(), self::processor_fields(), self::$slug );
+		new \calderawp\cfedd\cf\bundler( self::processor_config(), self::processor_fields(), self::$slug );
 		if ( is_admin() ) {
 			if ( null == $form_id && isset( $_GET[ 'page' ], $_GET[ 'edit' ] ) && 'caldera-forms' == $_GET[ 'page' ] ) {
 				$form_id = $_GET[ 'edit' ];
@@ -54,11 +56,8 @@ class init {
 
 
 	/**
-	 * Config for processor
-	 *
+	 * @inheritdoc
 	 * @since 0.0.1
-	 *
-	 * @return array
 	 */
 	public static function processor_config(){
 		return [
@@ -66,16 +65,13 @@ class init {
 			'description' => __( 'Sell dynamically created bundles', 'cf-edd-pro' ),
 			'cf_ver' => '1.4.6',
 			'author' => 'Josh Pollock',
-			'template' => __DIR__ . '/includes/bundle-config.php'
+			'template' => CF_EDD_PRO_PATH . '/includes/bundle-config.php'
 		];
 	}
 
 	/**
-	 * Processor fields
-	 *
+	 * @inheritdoc
 	 * @since 0.0.1
-	 *
-	 * @return array
 	 */
 	public static function processor_fields(){
 		return [
@@ -133,11 +129,8 @@ class init {
 	}
 
 	/**
-	 * Group field sub-fields
-	 *
+	 * @inheritdoc
 	 * @since 0.0.1
-	 *
-	 * @return array
 	 */
 	public static function download_group_fields(){
 		return [
@@ -155,11 +148,8 @@ class init {
 
 
 	/**
-	 * Translation strings for the group field
-	 *
+	 * @inheritdoc
 	 * @since 0.0.1
-	 *
-	 * @return array
 	 */
 	public function translation_strings(){
 
