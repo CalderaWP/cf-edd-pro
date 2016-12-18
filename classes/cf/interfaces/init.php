@@ -30,21 +30,4 @@ interface init {
 	 */
 	public static function processor_fields();
 
-	/**
-	 * Group field sub-fields
-	 *
-	 * @since 0.0.1
-	 *
-	 * @return array
-	 */
-	public static function download_group_fields();
-
-	/**
-	 * Translation strings for the group field
-	 *
-	 * @since 0.0.1
-	 *
-	 * @return array
-	 */
-	public function translation_strings();
 }
