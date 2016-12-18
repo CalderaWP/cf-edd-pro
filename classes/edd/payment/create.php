@@ -17,10 +17,8 @@ class create {
 	const GATEWAY = 		'cf_edd_pro';
 
 	/**
-	 * @var \EDD_Payment
+	 * @var bundle
 	 */
-	protected $payment;
-
 	protected $bundle;
 
 	protected $bundle_id;
@@ -30,10 +28,20 @@ class create {
 	public function __construct( $total, $bundle_id, $bundled_downloads, array $payment_details = array() ) {
 		$this->bundle_id = $bundle_id;
 		$payment = $this->create_payment( $total, $payment_details );
-		$this->set_bundle_contents( $payment, $bundle_id,$payment_details, $bundled_downloads);
+		$this->set_bundle_contents( $payment, $bundle_id, $bundled_downloads);
 
 	}
 
+	/**
+	 * Get created payment ID
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return int
+	 */
+	public function get_payment_id(){
+		return $this->bundle->get_payment()->get_ID();
+	}
 
 
 	public function create_payment( $total, $payment_details, $status = 'pending' ) {

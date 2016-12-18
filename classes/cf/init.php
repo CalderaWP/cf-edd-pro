@@ -87,8 +87,43 @@ class init {
 				'magic' => true,
 			],
 			[
+				'id' => 'cf-edd-pro-redirect',
+				'label' => __( 'Redirect To Cart?', 'edd-pro'),
+				'desc' => __( 'Redirect to EDD cart after form is completed', 'cf-edd-pro' ),
+				'type' => 'checkbox',
+				'options' => [
+					'value' => '1',
+					'label' => __( 'Yes', 'cf-edd-pro' )
+				]
+ 			],
+			[
+				'id' => 'cf-edd-pro-min',
+				'label' => __( 'Minimum Size', 'cf-edd-pro' ),
+				'desc' => __( 'Minimum number of downloads to qualify for bundle price', 'cf-edd-pro' ),
+				'type' => 'number',
+				'required' => true,
+				'magic' => true,
+			],
+			[
+				'id' => 'cf-edd-pro-max',
+				'label' => __( 'Maximum Size', 'cf-edd-pro' ),
+				'desc' => __( 'Maximum number of downloads to qualify for bundle price', 'cf-edd-pro' ),
+				'type' => 'number',
+				'required' => true,
+				'magic' => true,
+			],
+			[
+				'id' => 'cf-edd-bundle-id',
+				'label' => __( 'Bundle to customize', 'cf-edd-pro' ),
+				'desc' => __( 'The ID of an EDD Download Bundle to be customized by this processor', 'cf-edd-pro' ),
+				'type' => 'text',
+				'required' => true,
+				'magic' => true,
+			],
+			[
 				'id' => 'cf-edd-pro-downloads',
-				'label' => __( 'Price For Bundle', 'cf-edd-pro' ),
+				'label' => __( 'Downloads', 'cf-edd-pro' ),
+				'desc' => __( 'Fields for selecting downloads or download IDs', 'cf-edd-pro' ),
 				'type' => 'group',
 				'required' => true,
 				'group-slug' => self::$slug
@@ -109,7 +144,7 @@ class init {
 			'fields' => [
 				[
 					'id'       => 'download',
-					'label'    => __( 'Field to select a download to add to bundle.', 'cf-discount' ),
+					'label'    => __( 'Download', 'cf-discount' ),
 					'required' => true,
 					'type'     => 'text',
 					'magic'    => true,

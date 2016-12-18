@@ -92,6 +92,17 @@ class bundle {
 	}
 
 	/**
+	 * Get payment for this custom bundle
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return \EDD_Download|\EDD_Payment
+	 */
+	public function get_payment(){
+		return $this->payment;
+	}
+
+	/**
 	 * Add one download to this custom bundle
 	 *
 	 * @param int $id Download ID
