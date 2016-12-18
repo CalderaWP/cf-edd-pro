@@ -4,9 +4,39 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e09f1f8c2c8a3f6f814d04f3a655ce31",
-    "content-hash": "14e7e2a196996e987b097950257940d6",
+    "hash": "cbfaa2dc4339ba07b7b8f0e3de385377",
+    "content-hash": "81b59bc795223cb4298c4224aa34b990",
     "packages": [
+        {
+            "name": "calderawp/cf-grouped-configs",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CalderaWP/cf-grouped-configs",
+                "reference": "552a0c13a4a84004a8bba8ebacd190715b0160c9"
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "calderawp\\cf\\groupconfig\\": "src"
+                }
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Pollock for CalderaWP LLC",
+                    "homepage": "https://CalderaWP.com",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "Library for adding grouped configs to Caldera Forms processor UI",
+            "time": "2016-08-15 22:27:21"
+        },
         {
             "name": "calderawp/dismissible-notice",
             "version": "dev-master",
@@ -92,7 +122,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.0"
+        "php": ">=5.4.0"
     },
     "platform-dev": []
 }

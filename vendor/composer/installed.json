@@ -76,5 +76,37 @@
         "keywords": [
             "wordpress"
         ]
+    },
+    {
+        "name": "calderawp/cf-grouped-configs",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/CalderaWP/cf-grouped-configs",
+            "reference": "552a0c13a4a84004a8bba8ebacd190715b0160c9"
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2016-08-15 22:27:21",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "calderawp\\cf\\groupconfig\\": "src"
+            }
+        },
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Josh Pollock for CalderaWP LLC",
+                "homepage": "https://CalderaWP.com",
+                "role": "Lead Developer"
+            }
+        ],
+        "description": "Library for adding grouped configs to Caldera Forms processor UI"
     }
 ]

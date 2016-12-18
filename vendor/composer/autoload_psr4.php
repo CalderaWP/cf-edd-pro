@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'calderawp\\licensing_helper\\' => array($vendorDir . '/calderawp/licensing-helper/src'),
     'calderawp\\cfedd\\' => array($baseDir . '/classes'),
+    'calderawp\\cf\\groupconfig\\' => array($vendorDir . '/calderawp/cf-grouped-configs/src'),
 );

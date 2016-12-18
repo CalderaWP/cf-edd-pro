@@ -1,11 +1,23 @@
 <?php
 
-
-add_action( 'init', function(){
+/**
+ * Load autoloader
+ */
+add_action( 'plugins_loaded', function(){
 	include __DIR__ . '/vendor/autoload.php';
-	$c = new \calderawp\cfedd\edd\payment\create( '11.45', 9868, [ 9870 ] );
+}, 2 );
 
+
+/**
+ * Add bundle builder processor to Caldera Forms
+ *
+ * @since 0.0.1
+ */
+add_filter( 'caldera_forms_pre_load_processors', function() {
+	\calderawp\cfedd\cf\init::create_processor();
 });
+
+
 
 add_filter( 'edd_enabled_payment_gateways', function( $gateways ){
 	if( ! edd_is_checkout() ){
@@ -16,7 +28,7 @@ add_filter( 'edd_enabled_payment_gateways', function( $gateways ){
 });
 
 function cf_eddpro_gateway_definitions(){
-return [];
+	return [];
 	return [
 		\calderawp\cfedd\edd\payment\create::GATEWAY => [
 			'admin_label'    => __( 'Caldera Forms', 'cf-edd-pro' ),
