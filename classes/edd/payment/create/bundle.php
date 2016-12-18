@@ -6,28 +6,48 @@
  * Time: 6:03 PM
  */
 
-namespace calderawp\cfedd\edd\payment;
+namespace calderawp\cfedd\edd\create\payment;
 
 
-use calderawp\cfedd\edd\bundle;
-use calderawp\cfedd\edd\payment;
 
-class create {
 
-	const GATEWAY = 		'cf_edd_pro';
+class bundle extends payment {
+
+
 
 	/**
-	 * @var bundle
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var \calderawp\cfedd\edd\bundle
 	 */
 	protected $bundle;
 
+	/**
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var int
+	 */
 	protected $bundle_id;
 
-	protected $payment_id;
 
+	/**
+	 * bundle constructor.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param string|float $total Total price
+	 * @param int $bundle_id Download ID of the custom bundle
+	 * @param array $bundled_downloads IDs of downloads to add to bundle
+	 * @param array $payment_details Payment details to save
+	 */
 	public function __construct( $total, $bundle_id, $bundled_downloads, array $payment_details = array() ) {
 		$this->bundle_id = $bundle_id;
-		$payment = $this->create_payment( $total, $payment_details );
+		$payment = $this->setup_payment( $total, [ $bundle_id ], $payment_details );
+		if( $this->validate_payment_object( $payment ) ){
+			$this->save_payment( $payment );
+		}
 		$this->set_bundle_contents( $payment, $bundle_id, $bundled_downloads);
 
 	}
@@ -43,62 +63,15 @@ class create {
 		return $this->bundle->get_payment()->get_ID();
 	}
 
-
-	public function create_payment( $total, $payment_details, $status = 'pending' ) {
-		$payment        = new \EDD_Payment();
-		$payment->total = floatval( $total );
-		$payment->gateway = self::GATEWAY;
-		$payment->status = $status;
-
-
-		foreach( [
-			'user_id' => get_current_user_id(),
-			'customer_id' => 0,
-			'ip' => caldera_forms_get_ip(),
-			'has_unlimited_downloads' => true,
-			'user_info' => false
-		] as $field => $default ){
-			if( 'user_info' == $field && empty( $payment_details[ 'user_info' ] ) ){
-				$payment_details[ 'user_info' ] = $this->user_info_from_id( $payment->user_id );
-			}
-			if( ! empty( $payment_details[ $field ] ) ){
-				$payment->$field = $payment_details[ $field ];
-			}else{
-				$payment->$field = $default;
-			}
-
-		}
-
-		foreach( [
-			'email',
-			'first_name',
-			'last_name'
-		] as $field ){
-			if( isset( $payment->user_info[ $field ] ) ){
-				$payment->$field = $payment->user_info[ $field ];
-			}
-
-		}
-
-		$payment->add_download( $this->bundle_id, [
-			'item_price' => $total
-		] );
-
-
-		if( ! $payment->customer_id ){
-			$customer = $this->find_customer( $payment->user_id, $payment->email );
-			if( is_object( $customer ) ){
-				$payment->customer_id = $customer->id;
-			}
-		}
-
-		$payment->save();
-
-		$this->payment_id = $this->payment->ID;
-		return $payment;
-
-	}
-
+	/**
+	 * Get necessary user info by user ID
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param $id
+	 *
+	 * @return array
+	 */
 	public function user_info_from_id( $id ){
 		$user = get_user_by( 'ID', $id );
 
@@ -111,6 +84,16 @@ class create {
 		}
 	}
 
+	/**
+	 * Find EDD customer by user ID or email
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param int $user_id User ID
+	 * @param string $email Email
+	 *
+	 * @return bool|\EDD_Customer
+	 */
 	public function find_customer( $user_id = 0, $email = '' ){
 		if( $user_id && is_object( $user = get_user_by( 'ID', $user_id ) )){
 			$_customer = new \EDD_Customer( $user_id, true );
@@ -130,9 +113,18 @@ class create {
 		return false;
 	}
 
+	/**
+	 * Set up our bundle abstraction
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param \EDD_Payment $payment Payment object
+	 * @param int $bundle_id Bundle ID
+	 * @param array $bundled_downloads Array of downloads IDs to add
+	 */
 	public function set_bundle_contents( \EDD_Payment $payment, $bundle_id, array  $bundled_downloads ){
 		if( is_object( $download = get_post( $bundle_id ) ) && 'download' == get_post_type( $download ) ){
-			$this->bundle = new bundle(  new \EDD_Download( $download ), $payment );
+			$this->bundle = new \calderawp\cfedd\edd\bundle(  new \EDD_Download( $download ), $payment );
 			if( ! empty( $bundled_downloads ) ){
 				foreach ( array_values ($bundled_downloads  ) as $i => $download ){
 					$save = false;

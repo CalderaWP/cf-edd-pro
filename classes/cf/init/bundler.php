@@ -26,13 +26,8 @@ class bundler implements init{
 	protected static $slug = 'cf-edd-pro';
 
 	/**
-	 * Create the processor
-	 *
-	 * @uses "caldera_forms_pre_load_processors" filter
-	 *
+	 * @inheritdoc
 	 * @since 0.0.1
-	 *
-	 * @param null $form_id Optional. Form ID - used in admin - will be pulled from URL if not passed.
 	 */
 	public static function create_processor( $form_id = null ) {
 		new \calderawp\cfedd\cf\bundler( self::processor_config(), self::processor_fields(), self::$slug );
@@ -65,7 +60,16 @@ class bundler implements init{
 			'description' => __( 'Sell dynamically created bundles', 'cf-edd-pro' ),
 			'cf_ver' => '1.4.6',
 			'author' => 'Josh Pollock',
-			'template' => CF_EDD_PRO_PATH . '/includes/bundle-config.php'
+			'template' => CF_EDD_PRO_PATH . '/includes/bundle-config.php',
+			'single' => true,
+			'magic_tags' => [
+				'payment_id',
+				'first_name',
+				'last_name',
+				'email',
+				'user_id',
+				'customer_id'
+			]
 		];
 	}
 
@@ -82,16 +86,6 @@ class bundler implements init{
 				'required' => true,
 				'magic' => true,
 			],
-			[
-				'id' => 'cf-edd-pro-redirect',
-				'label' => __( 'Redirect To Cart?', 'edd-pro'),
-				'desc' => __( 'Redirect to EDD cart after form is completed', 'cf-edd-pro' ),
-				'type' => 'checkbox',
-				'options' => [
-					'value' => '1',
-					'label' => __( 'Yes', 'cf-edd-pro' )
-				]
- 			],
 			[
 				'id' => 'cf-edd-pro-min',
 				'label' => __( 'Minimum Size', 'cf-edd-pro' ),

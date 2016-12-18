@@ -9,7 +9,9 @@
 namespace calderawp\cfedd\cf;
 
 
-use calderawp\cfedd\edd\payment\create;
+
+
+use calderawp\cfedd\edd\create\payment\bundle;
 
 class bundler extends processor {
 
@@ -33,10 +35,30 @@ class bundler extends processor {
 	 * @since 0.0.1
 	 */
 	public function processor( array $config, array $form, $proccesid ) {
+		$return = [
+			'payment_id' => false,
+			'first_name'=> false,
+			'last_name'=> false,
+			'email'=> false,
+			'user_id'=> false,
+			'customer_id'=> false,
+		];
 		$this->setup_transata( $proccesid );
 		$downloads = $this->get_downloads_from_transdata( $proccesid );
 		if( ! empty( $downloads ) ){
-			$payment = new create( $this->data_object->get_value( 'cf-edd-pro-total' ), $this->data_object->get_value( 'cf-edd-bundle-id' ), $downloads, array() );
+			$bundle_id = $this->data_object->get_value( 'cf-edd-bundle-id' );
+			$this->add_bundle_id_to_transdata( $bundle_id, $proccesid );
+			$payment = new bundle( $this->data_object->get_value( 'cf-edd-pro-total' ), $bundle_id, $downloads, array() );
+			$this->add_payment_id_to_transdata(  $payment->get_payment_id(), $proccesid );
+
+			global  $transdata;
+
+			foreach ( $return as $field ){
+				$transdata[ $proccesid ][ 'meta'] [ $this->slug ][ $field ] = $payment->$field;
+				$return[ $field ] = $payment->$field;
+			}
+
+			return $return;
 
 		}
 
