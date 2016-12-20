@@ -9,7 +9,7 @@
  * @copyright 2016 CalderaWP LLC
  */
 
-namespace calderawp\cfedd\edd\create\payment;
+namespace calderawp\cfedd\edd\payment\create;
 
 
 
@@ -51,13 +51,13 @@ class bundle extends payment {
 	 * @param array $payment_details Payment details to save
 	 */
 	public function __construct( $total, $bundle_id, $bundled_downloads, array $payment_details = array() ) {
-		$this->bundle_id = $bundle_id;
+		$this->bundle_id = absint(  trim ( $bundle_id ) );
 		$payment = $this->setup_payment( $total, [ $bundle_id ], $payment_details );
 		if( $this->validate_payment_object( $payment ) ){
 			$this->save_payment( $payment );
 			$this->add_to_user_meta();
 		}
-		$this->set_bundle_contents( $payment, $bundle_id, $bundled_downloads);
+		$this->set_bundle_contents( $payment, $this->bundle_id, $bundled_downloads);
 
 	}
 
@@ -69,7 +69,18 @@ class bundle extends payment {
 	 * @return int
 	 */
 	public function get_payment_id(){
-		return $this->bundle->get_payment()->get_ID();
+		return $this->bundle->get_payment()->ID;
+	}
+
+	/**
+	 * Get created payment
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return \EDD_Payment
+	 */
+	public function get_payment(){
+		return $this->bundle->get_payment();
 	}
 
 	/**
@@ -133,7 +144,7 @@ class bundle extends payment {
 	 */
 	public function set_bundle_contents( \EDD_Payment $payment, $bundle_id, array  $bundled_downloads ){
 		if( is_object( $download = get_post( $bundle_id ) ) && 'download' == get_post_type( $download ) ){
-			$this->bundle = new \calderawp\cfedd\edd\bundle(  new \EDD_Download( $download ), $payment );
+			$this->bundle = new \calderawp\cfedd\edd\bundle(  new \EDD_Download( $bundle_id ), $payment );
 			if( ! empty( $bundled_downloads ) ){
 				foreach ( array_values ($bundled_downloads  ) as $i => $download ){
 					$save = false;

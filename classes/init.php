@@ -63,7 +63,7 @@ class init {
 				$this->init_meta_tracker();
 			}
 
-			return $this->get_meta_tracker();
+			return $this->meta_tracker;
 		}
 
 		return null;
@@ -81,10 +81,16 @@ class init {
 	}
 
 	public function add_edd_hooks(){
-		$this->init_meta_tracker();
-		if( $this->meta_tracker ){
-			$this->edd_filter = new user( $this->meta_tracker );
+		if( is_user_logged_in() ){
+			$this->init_meta_tracker();
+			if( $this->meta_tracker ){
+				$this->edd_filter = new user( $this->meta_tracker );
+				return true;
+			}
 		}
+
+
+		return false;
 	}
 
 	/**

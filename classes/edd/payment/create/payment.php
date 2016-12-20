@@ -10,7 +10,7 @@
  */
 
 
-namespace calderawp\cfedd\edd\create\payment;
+namespace calderawp\cfedd\edd\payment\create;
 
 
 abstract  class payment {
@@ -89,6 +89,12 @@ abstract  class payment {
 			}
 		}
 
+		if ( ! empty( $downloads ) ) {
+			foreach ( $downloads as $download ) {
+				$payment->add_download( trim( $download ) );
+			}
+		}
+
 		return $payment;
 	}
 
@@ -107,7 +113,7 @@ abstract  class payment {
 
 		$payment->save();
 
-		$this->payment_id = $this->payment->ID;
+		$this->payment_id = $payment->ID;
 		return $payment;
 
 	}

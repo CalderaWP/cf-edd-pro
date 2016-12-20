@@ -96,7 +96,7 @@ class bundle {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @return \EDD_Download|\EDD_Payment
+	 * @return \EDD_Payment
 	 */
 	public function get_payment(){
 		return $this->payment;

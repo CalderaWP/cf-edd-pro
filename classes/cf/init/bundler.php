@@ -115,7 +115,7 @@ class bundler implements init{
 				'label' => __( 'Downloads', 'cf-edd-pro' ),
 				'desc' => __( 'Fields for selecting downloads or download IDs', 'cf-edd-pro' ),
 				'type' => 'group',
-				'required' => true,
+				'required' => false,
 				'group-slug' => self::$slug
 			]
 		];

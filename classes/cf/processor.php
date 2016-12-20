@@ -25,6 +25,9 @@ abstract class processor extends \Caldera_Forms_Processor_Processor {
 	 */
 	public function add_downloads_to_transdata( array $downloads, $processid  ){
 		global $transdata;
+		if( ! isset( $transdata[ $processid ]  ) ){
+			$transdata[ $processid ] = [];
+		}
 		$transdata[ $processid ][ 'downloads' ] = $downloads;
 	}
 

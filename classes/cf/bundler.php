@@ -12,7 +12,9 @@
 namespace calderawp\cfedd\cf;
 
 
-use calderawp\cfedd\edd\create\payment\bundle;
+
+
+use calderawp\cfedd\edd\payment\create\bundle;
 
 class bundler extends processor {
 
@@ -43,25 +45,40 @@ class bundler extends processor {
 			'email'=> false,
 			'user_id'=> false,
 			'customer_id'=> false,
+			'total' => false,
+			'subtotal' => 0,
+			'tax' => 0,
 		];
-		$this->setup_transata( $proccesid );
 		$downloads = $this->get_downloads_from_transdata( $proccesid );
 		if( ! empty( $downloads ) ){
 			$bundle_id = $this->data_object->get_value( 'cf-edd-bundle-id' );
 			$this->add_bundle_id_to_transdata( $bundle_id, $proccesid );
-			$payment = new bundle( $this->data_object->get_value( 'cf-edd-pro-total' ), $bundle_id, $downloads, array() );
-			$this->add_payment_id_to_transdata(  $payment->get_payment_id(), $proccesid );
+			$bundler = new bundle( $this->data_object->get_value( 'cf-edd-pro-total' ), $bundle_id, $downloads, array() );
+			$payment = $bundler->get_payment();
+			$this->add_payment_id_to_transdata(  $payment->ID, $proccesid );
 
 			global  $transdata;
 
-			foreach ( $return as $field ){
-				$transdata[ $proccesid ][ 'meta'] [ $this->slug ][ $field ] = $payment->$field;
-				$return[ $field ] = $payment->$field;
+			foreach ( $return as $field => $default ){
+				if( 'payment_id' == $field ){
+					$pf = 'ID';
+				}else{
+					$pf = $field;
+				}
+				if (  isset( $payment->$pf ) ) {
+					$transdata[ $proccesid ][ 'meta' ] [ $this->slug ][ $field ] = $payment->$pf;
+					$return[ $field ] = $payment->$pf;
+				}else{
+					$transdata[ $proccesid ][ 'meta' ] [ $this->slug ][ $field ] = $default;
+				}
+
 			}
 
-			return $return;
+
 
 		}
+
+		return $return;
 
 	}
 
