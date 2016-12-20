@@ -1,6 +1,6 @@
 <?php
 /**
- * Gets the meta for
+ * Handles user meta for tracking custom bundles by user.
  *
  * @package Caldera_Forms
  * @author    Josh Pollock <Josh@CalderaWP.com>

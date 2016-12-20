@@ -1,14 +1,15 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: josh
- * Date: 12/17/16
- * Time: 10:42 PM
+ * Bundle builder processor
+ *
+ * @package Caldera_Forms
+ * @author    Josh Pollock <Josh@CalderaWP.com>
+ * @license   GPL-2.0+
+ * @link
+ * @copyright 2016 CalderaWP LLC
  */
 
 namespace calderawp\cfedd\cf;
-
-
 
 
 use calderawp\cfedd\edd\create\payment\bundle;

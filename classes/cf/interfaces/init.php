@@ -1,10 +1,16 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: josh
- * Date: 12/17/16
- * Time: 10:38 PM
+ * Interface for processor setups
+ *
+ * Should this be in Caldera Forms core?
+ *
+ * @package Caldera_Forms
+ * @author    Josh Pollock <Josh@CalderaWP.com>
+ * @license   GPL-2.0+
+ * @link
+ * @copyright 2016 CalderaWP LLC
  */
+
 
 namespace calderawp\cfedd\cf\interfaces;
 

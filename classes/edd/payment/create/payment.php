@@ -1,10 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: josh
- * Date: 12/17/16
- * Time: 11:18 PM
+ * Base class for payment creation classes
+ *
+ * @package Caldera_Forms
+ * @author    Josh Pollock <Josh@CalderaWP.com>
+ * @license   GPL-2.0+
+ * @link
+ * @copyright 2016 CalderaWP LLC
  */
+
 
 namespace calderawp\cfedd\edd\create\payment;
 
@@ -12,11 +16,19 @@ namespace calderawp\cfedd\edd\create\payment;
 abstract  class payment {
 
 	/**
+	 * ID of created payment
+	 *
+	 * @since 0.0.1
+	 *
 	 * @var int
 	 */
 	protected $payment_id;
 
 	/**
+	 * Custom payment gateway ID
+	 *
+	 * @since 0.0.1
+	 *
 	 * @var string
 	 */
 	const GATEWAY = 		'cf_edd_pro';
@@ -80,6 +92,17 @@ abstract  class payment {
 		return $payment;
 	}
 
+	/**
+	 * Save payment
+	 *
+	 * Sets payment_id property
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param \EDD_Payment $payment
+	 *
+	 * @return \EDD_Payment
+	 */
 	public function save_payment( \EDD_Payment $payment ) {
 
 		$payment->save();
@@ -101,4 +124,5 @@ abstract  class payment {
 	protected function validate_payment_object( $payment ){
 		return is_object( $payment ) && ! is_wp_error( $payment );
 	}
+
 }
