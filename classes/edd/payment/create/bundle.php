@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: josh
- * Date: 12/17/16
- * Time: 6:03 PM
+ * Create a custom bundles payment
+ *
+ * @package Caldera_Forms
+ * @author    Josh Pollock <Josh@CalderaWP.com>
+ * @license   GPL-2.0+
+ * @link
+ * @copyright 2016 CalderaWP LLC
  */
 
 namespace calderawp\cfedd\edd\create\payment;
@@ -11,11 +14,15 @@ namespace calderawp\cfedd\edd\create\payment;
 
 
 
+use calderawp\cfedd\edd\object\user_meta;
+use calderawp\cfedd\init;
+
 class bundle extends payment {
 
 
 
 	/**
+	 * Bundle DB abstraction
 	 *
 	 * @since 0.0.1
 	 *
@@ -24,6 +31,7 @@ class bundle extends payment {
 	protected $bundle;
 
 	/**
+	 * The bundle ID
 	 *
 	 * @since 0.0.1
 	 *
@@ -47,6 +55,7 @@ class bundle extends payment {
 		$payment = $this->setup_payment( $total, [ $bundle_id ], $payment_details );
 		if( $this->validate_payment_object( $payment ) ){
 			$this->save_payment( $payment );
+			$this->add_to_user_meta();
 		}
 		$this->set_bundle_contents( $payment, $bundle_id, $bundled_downloads);
 
@@ -74,7 +83,6 @@ class bundle extends payment {
 	 */
 	public function user_info_from_id( $id ){
 		$user = get_user_by( 'ID', $id );
-
 		if( $user ){
 			return [
 				'first_name' => $user->user_firstname,
@@ -82,6 +90,7 @@ class bundle extends payment {
 				'email' => $user->user_email,
 			];
 		}
+
 	}
 
 	/**
@@ -137,6 +146,20 @@ class bundle extends payment {
 			}
 
 		}
+
+	}
+
+	/**
+	 * Track payment in meta for user
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param \WP_User|null $user Optional. User who is making purchase. Default is current user.
+	 */
+	public function add_to_user_meta( \WP_User $user = null ){
+
+		$meta_tracker = init::get_instance()->get_meta_tracker( $user );
+		$meta_tracker->add_bundle(  $this->bundle_id, $this->payment_id );
 
 	}
 

@@ -1,13 +1,17 @@
 <?php
-
+use \calderawp\cfedd\init;
 /**
- * Load autoloader
+ * Load autoloader and initializing class
  */
 add_action( 'plugins_loaded', function(){
 	include __DIR__ . '/vendor/autoload.php';
-	( new \calderawp\cfedd\edd\init() )->add_hooks();
+	init::get_instance()->add_cf_hooks();
+	init::get_instance()->add_edd_hooks();
 }, 2 );
 
+
+/**
+ * NEED THESE?
 
 
 
@@ -29,3 +33,4 @@ function cf_eddpro_gateway_definitions(){
 		],
 	];
 }
+ **/
