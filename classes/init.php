@@ -85,6 +85,7 @@ class init {
 			$this->init_meta_tracker();
 			if( $this->meta_tracker ){
 				$this->edd_filter = new user( $this->meta_tracker );
+				$this->edd_filter->add_filters();
 				return true;
 			}
 		}

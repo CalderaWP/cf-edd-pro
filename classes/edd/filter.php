@@ -50,7 +50,7 @@ class filter {
 	 */
 	public function add_hooks(){
 		add_filter( 'edd_get_bundled_products', [ $this, 'filter_bundled_downloads' ], 50, 2  );
-		add_filter( 'edd_get_download_type', [ $this, 'set_bundle' ], 50, 2 );
+		add_filter( 'edd_get_download_type', [ $this, 'set_type' ], 50, 2 );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class filter {
 	 */
 	public function remove_hooks(){
 		remove_filter( 'edd_get_bundled_products', [ $this, 'filter_bundled_downloads' ], 50 );
-		remove_filter( 'edd_get_download_type', [ $this, 'set_bundle' ], 50 );
+		remove_filter( 'edd_get_download_type', [ $this, 'set_type' ], 50 );
 	}
 
 	/**

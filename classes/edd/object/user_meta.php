@@ -75,7 +75,7 @@ class user_meta {
 	 * @return bool
 	 */
 	public function set_payment_id( $id ){
-		if( is_string( $id ) ){
+		if( is_numeric( $id ) ){
 			$this->payment_id = $id;
 			return true;
 		}

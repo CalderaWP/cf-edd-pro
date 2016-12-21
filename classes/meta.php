@@ -82,8 +82,16 @@ class meta {
 		$meta = get_user_meta( $this->user->ID, self::BUNDLE_META_KEY );
 		if( ! empty( $meta  ) && is_array( $meta )){
 			foreach ( $meta as $value  ) {
-				if ( $this->validate_meta_value( $value ) ) {
-					$bundles[] = $value;
+				if( is_array( $value ) ){
+					foreach ( $value as $v ){
+						if( $this->validate_meta_value( $v ) ){
+							$bundles[] = $v;
+						}
+					}
+				}else{
+					if( $this->validate_meta_value( $value ) ) {
+						$bundles[] = $value;
+					}
 				}
 			}
 		}else{
@@ -118,5 +126,7 @@ class meta {
 
 			return $value;
 		}
+
+		return false;
 	}
 }

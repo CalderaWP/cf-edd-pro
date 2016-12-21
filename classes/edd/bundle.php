@@ -75,8 +75,11 @@ class bundle {
 	 * @since 0.0.1
 	 */
 	public function add_filters(){
-		$this->filterer = new filter( $this->download->ID, $this->get_bundled_downloads() );
-		$this->filterer->add_hooks();
+		$this->get_bundled_downloads();
+		if ( is_array( $this->bundled_downloads) ) {
+			$this->filterer = new filter( $this->download->ID, $this->bundled_downloads );
+			$this->filterer->add_hooks();
+		}
 	}
 
 	/**
@@ -134,7 +137,7 @@ class bundle {
 	 */
 	public function get_bundled_downloads(){
 		if( ! is_array( $this->bundled_downloads ) ){
-			$this->get_saved_bundled_downloads();
+			$this->bundled_downloads = $this->get_saved_bundled_downloads();
 		}
 
 		return $this->bundled_downloads;

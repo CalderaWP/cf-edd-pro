@@ -54,6 +54,7 @@ class user {
 	 * @since 0.0.1
 	 */
 	public function add_filters(){
+		$this->maybe_init_bundles();
 		if( ! empty( $this->bundles ) ){
 			/** @var bundle $bundle */
 			foreach ( $this->bundles as $bundle ){
@@ -70,6 +71,7 @@ class user {
 	 * @since 0.0.1
 	 */
 	public function remove_filters(){
+		$this->maybe_init_bundles();
 		if( ! empty( $this->bundles ) ){
 			/** @var bundle $bundle */
 			foreach ( $this->bundles as $bundle ){
@@ -99,6 +101,17 @@ class user {
 
 		}
 
+	}
+
+	/**
+	 * If bundles property !isset loads it.
+	 *
+	 * @since 0.0.1
+	 */
+	protected function maybe_init_bundles() {
+		if ( empty( $this->bundles ) ) {
+			$this->get_bundles();
+		}
 	}
 
 }
