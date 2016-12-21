@@ -14,6 +14,8 @@ namespace calderawp\cfedd\cf\populate;
 
 class query {
 
+	protected $prices;
+
 
 	/**
 	 * Add Hooks
@@ -55,6 +57,8 @@ class query {
 						'value'	=>	$post->ID,
 						'label' =>	$post->post_title
 					);
+					$this->add_price( $field[ 'ID' ], $post->ID, $form[ 'ID' ] );
+
 				}
 				$field = \Caldera_Forms::format_select_options( $field );
 			}
@@ -62,9 +66,33 @@ class query {
 
 		}
 
-
-
 		return $field;
+
+	}
+
+	protected function add_price( $field_id, $download_id, $form_id ){
+		$download = new \EDD_Download( $download_id );
+		if( $download->has_variable_prices() ){
+			$price_id = edd_get_default_variable_price( $download_id);
+			$prices = $download->get_prices();
+			if( isset( $prices[ $price_id ] ) ){
+				$price = $prices[ $price_id ][ 'amount' ];
+			}else{
+				$price = $prices[ key($prices ) ][ 'amount' ];
+			}
+		}else{
+			$price = $download->get_price();
+		}
+
+		if( ! isset( $this->prices[ $form_id ] ) ){
+			$this->prices[ $form_id ] = [];
+		}
+
+		if( ! isset( $this->prices[ $form_id ][ $field_id ] ) ){
+			$this->prices[ $form_id ][ $field_id ] = [];
+		}
+
+		$this->prices[ $form_id ][ $field_id ][ $download_id ] = $price;
 
 	}
 
@@ -108,5 +136,6 @@ class query {
 		return ( ! empty( $field[ 'config' ][ 'auto' ] ) && 'edd' == $field[ 'config' ][ 'auto_type' ] );
 
 	}
+
 
 }

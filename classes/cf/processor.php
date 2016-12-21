@@ -158,12 +158,42 @@ abstract class processor extends \Caldera_Forms_Processor_Processor {
 	 */
 	public function get_payment_id_from_transdata( $processid ){
 		global $transdata;
-		if( isset( $transdata[ $processid ] ) && ! empty( $transdata[$processid  ] ) && ! empty(  $transdata[ $processid ][ 'payment' ] )){
+		if( isset( $transdata[ $processid ] ) && ! empty( $transdata[ $processid  ] ) && ! empty(  $transdata[ $processid ][ 'payment' ] )){
 
 			return absint( $transdata[ $processid ][ 'payment' ] );
 		}
 
 		return 0;
+	}
+
+	/**
+	 * Store price in transdata
+	 *
+	 * @since 0.0.2
+	 *
+	 * @param $price
+	 * @param $processid
+	 */
+	public function add_price_to_transdata( $price, $processid ){
+		global $transdata;
+		$transdata[ $processid ][ 'price' ] = $price;
+	}
+
+	/**
+	 * Get price from transdata
+	 *
+	 * @since 0.0.2
+	 *
+	 * @param $processid
+	 *
+	 * @return mixed
+	 */
+	public function get_price_from_transdata( $processid ){
+		global $transdata;
+		if( isset( $transdata[ $processid ] ) && ! empty( $transdata[ $processid  ] ) && ! empty(  $transdata[ $processid ][ 'price' ] )){
+
+			return  $transdata[ $processid ][ 'price' ];
+		}
 	}
 
 	/**

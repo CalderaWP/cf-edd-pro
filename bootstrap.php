@@ -8,6 +8,7 @@ add_action( 'plugins_loaded', function(){
 	add_filter( 'caldera_forms_pre_load_processors', function() {
 		\calderawp\cfedd\cf\init\bundler::create_processor();
 		\calderawp\cfedd\cf\init\payment::create_processor();
+		\calderawp\cfedd\cf\init\pricing::create_processor();
 	});
 
 	add_action( 'caldera_forms_admin_init', function(){
@@ -15,7 +16,27 @@ add_action( 'plugins_loaded', function(){
 
 	});
 
-	add_action( 'caldera_forms_core_init', function(){
+	add_action( 'init', function(){
 		( new  \calderawp\cfedd\cf\populate\query() )->add_hooks();
+
 	});
+
+	add_action( 'caldera_forms_render_start', function( $form ){
+		if( is_array( $form ) ){
+			\calderawp\cfedd\cf\pricing\factory::pricing_field( $form );
+		}
+	});
+
+	add_action( 'rest_api_init', function(){
+		if( ! did_action( 'caldera_forms_rest_api_init' ) ){
+			add_action( 'rest_api_init', [ 'Caldera_Forms', 'init_rest_api' ], 25 );
+		}
+
+		add_action( 'caldera_forms_rest_api_pre_init', function( $api ){
+			\calderawp\cfedd\cf\pricing\factory::create_route( $api );
+		});
+	});
+
+
+
 }, 2 );

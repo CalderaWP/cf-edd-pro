@@ -45,7 +45,11 @@ class bundler extends processor {
 		if( ! empty( $downloads ) ){
 			$bundle_id = $this->data_object->get_value( 'cf-edd-bundle-id' );
 			$this->add_bundle_id_to_transdata( $bundle_id, $proccesid );
-			$total = $this->data_object->get_value( 'cf-edd-pro-total' );
+			$total = $this->get_price_from_transdata( $proccesid );
+			if ( ! $total ) {
+				$total = $this->data_object->get_value( 'cf-edd-pro-total' );
+			}
+
 			$create = new bundle( $total, $bundle_id, $downloads );
 			$this->add_payment_id_to_transdata( $create->get_payment_id(), $proccesid );
 			global  $transdata;

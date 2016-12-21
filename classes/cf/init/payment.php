@@ -19,6 +19,9 @@ use calderawp\cfedd\cf\processor;
 class payment implements init{
 
 	protected static $slug = 'cf-edd-pro-payment';
+	public static function get_slug(){
+		return self::$slug;
+	}
 
 	/**
 	 * @inheritdoc
