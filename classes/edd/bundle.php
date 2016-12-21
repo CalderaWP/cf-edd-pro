@@ -75,9 +75,9 @@ class bundle {
 	 * @since 0.0.1
 	 */
 	public function add_filters(){
-		$this->get_bundled_downloads();
-		if ( is_array( $this->bundled_downloads) ) {
-			$this->filterer = new filter( $this->download->ID, $this->bundled_downloads );
+		$bundled = $this->get_bundled_downloads();
+		if ( is_array( $bundled ) ) {
+			$this->filterer = new filter( $this->download->ID, $bundled );
 			$this->filterer->add_hooks();
 		}
 	}
