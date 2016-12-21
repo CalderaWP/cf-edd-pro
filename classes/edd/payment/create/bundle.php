@@ -22,25 +22,6 @@ class bundle extends payment {
 
 
 	/**
-	 * Bundle DB abstraction
-	 *
-	 * @since 0.0.1
-	 *
-	 * @var \calderawp\cfedd\edd\bundle
-	 */
-	protected $bundle;
-
-	/**
-	 * The bundle ID
-	 *
-	 * @since 0.0.1
-	 *
-	 * @var int
-	 */
-	protected $bundle_id;
-
-
-	/**
 	 * bundle constructor.
 	 *
 	 * @since 0.0.1
@@ -52,36 +33,13 @@ class bundle extends payment {
 	 */
 	public function __construct( $total, $bundle_id, $bundled_downloads, array $payment_details = array() ) {
 		$this->bundle_id = absint(  trim ( $bundle_id ) );
-		$payment = $this->setup_payment( $total, [ $bundle_id ], $payment_details );
+		$payment = $this->setup_payment( $total, array_merge( [ $this->bundle_id ], $bundled_downloads ), $payment_details );
 		if( $this->validate_payment_object( $payment ) ){
 			$this->save_payment( $payment );
-			$this->add_to_user_meta();
 		}
-		$this->set_bundle_contents( $payment, $this->bundle_id, $bundled_downloads);
 
 	}
 
-	/**
-	 * Get created payment ID
-	 *
-	 * @since 0.0.1
-	 *
-	 * @return int
-	 */
-	public function get_payment_id(){
-		return $this->bundle->get_payment()->ID;
-	}
-
-	/**
-	 * Get created payment
-	 *
-	 * @since 0.0.1
-	 *
-	 * @return \EDD_Payment
-	 */
-	public function get_payment(){
-		return $this->bundle->get_payment();
-	}
 
 	/**
 	 * Get necessary user info by user ID
@@ -123,7 +81,6 @@ class bundle extends payment {
 
 		}
 
-
 		$_customer = new \EDD_Customer( $email, false );
 
 		if( $_customer ){
@@ -131,47 +88,6 @@ class bundle extends payment {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Set up our bundle abstraction
-	 *
-	 * @since 0.0.1
-	 *
-	 * @param \EDD_Payment $payment Payment object
-	 * @param int $bundle_id Bundle ID
-	 * @param array $bundled_downloads Array of downloads IDs to add
-	 */
-	public function set_bundle_contents( \EDD_Payment $payment, $bundle_id, array  $bundled_downloads ){
-		if( is_object( $download = get_post( $bundle_id ) ) && 'download' == get_post_type( $download ) ){
-			$this->bundle = new \calderawp\cfedd\edd\bundle(  new \EDD_Download( $bundle_id ), $payment );
-			if( ! empty( $bundled_downloads ) ){
-				foreach ( array_values ($bundled_downloads  ) as $i => $download ){
-					$save = false;
-					if( $i + 1 == count( $bundled_downloads ) ){
-						$save = true;
-					}
-					$this->bundle->add_download_to_bundle( $download, $save  );
-				}
-
-			}
-
-		}
-
-	}
-
-	/**
-	 * Track payment in meta for user
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param \WP_User|null $user Optional. User who is making purchase. Default is current user.
-	 */
-	public function add_to_user_meta( \WP_User $user = null ){
-
-		$meta_tracker = init::get_instance()->get_meta_tracker( $user );
-		$meta_tracker->add_bundle(  $this->bundle_id, $this->payment_id );
-
 	}
 
 

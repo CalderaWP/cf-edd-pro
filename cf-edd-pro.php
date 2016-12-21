@@ -1,10 +1,11 @@
 <?php
 /**
 Plugin name: Caldera Forms EDD Pro
+Version: 0.0.2
  */
 
 
-define( 'CF_EDD_PRO_VER', '0.).1' );
+define( 'CF_EDD_PRO_VER', '0.0.2' );
 define( 'CF_EDD_PRO_URL',     plugin_dir_url( __FILE__ ) );
 define( 'CF_EDD_PRO_PATH',    dirname( __FILE__ ) . '/' );
 define( 'CF_EDD_PRO_CORE',    dirname( __FILE__ )  );

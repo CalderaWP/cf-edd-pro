@@ -40,7 +40,6 @@ class bundler implements init{
 
 			if ( is_array( $form ) ) {
 				new \calderawp\cf\groupconfig\ui( $form, self::$slug, self::translation_strings(), self::download_group_fields()  );
-
 				wp_enqueue_script( 'cf-edd-pro', CF_EDD_PRO_URL . '/assets/admin.js', [
 					'jquery',
 					'cf-group-config'
@@ -107,7 +106,7 @@ class bundler implements init{
 			[
 				'id' => 'cf-edd-pro-downloads',
 				'label' => __( 'Downloads', 'cf-edd-pro' ),
-				'desc' => __( 'Fields for selecting downloads or download IDs', 'cf-edd-pro' ),
+				'desc' => __( 'Fields for selecting downloads IDs', 'cf-edd-pro' ),
 				'type' => 'group',
 				'required' => false,
 				'group-slug' => self::$slug
@@ -136,6 +135,8 @@ class bundler implements init{
 			]
 		];
 	}
+
+	/**
 
 
 	/**

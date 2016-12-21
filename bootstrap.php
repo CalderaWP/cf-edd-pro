@@ -5,8 +5,10 @@ use \calderawp\cfedd\init;
  */
 add_action( 'plugins_loaded', function(){
 	include __DIR__ . '/vendor/autoload.php';
-	init::get_instance()->add_cf_hooks();
-	init::get_instance()->add_edd_hooks();
+	add_filter( 'caldera_forms_pre_load_processors', function() {
+		\calderawp\cfedd\cf\init\bundler::create_processor();
+		\calderawp\cfedd\cf\init\payment::create_processor();
+	});
 }, 2 );
 
 

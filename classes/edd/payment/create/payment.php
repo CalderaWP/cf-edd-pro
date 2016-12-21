@@ -26,6 +26,18 @@ abstract  class payment {
 	 */
 	protected $payment_id;
 
+
+
+	/**
+	 * Payment Object
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var \calderawp\cfedd\edd\payment\payment;
+	 */
+	protected $payment;
+
+
 	/**
 	 * Custom payment gateway ID
 	 *
@@ -34,6 +46,32 @@ abstract  class payment {
 	 * @var string
 	 */
 	const GATEWAY = 		'cf_edd_pro';
+
+
+	/**
+	 * Get created payment ID
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return int
+	 */
+	public function get_payment_id(){
+		return $this->payment_id;
+	}
+
+	/**
+	 * Get created payment
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return \calderawp\cfedd\edd\payment\payment
+	 */
+	public function get_payment(){
+		if( ! $this->payment && is_numeric( $this->payment_id ) ){
+			$this->payment = new \calderawp\cfedd\edd\payment\payment( $this->payment_id );
+		}
+		return $this->payment;
+	}
 
 	/**
 	 * Setup payment object
@@ -45,10 +83,10 @@ abstract  class payment {
 	 * @param $payment_details
 	 * @param string $status
 	 *
-	 * @return \EDD_Payment
+	 * @return \calderawp\cfedd\edd\payment\payment
 	 */
 	public function setup_payment( $total, array $downloads = [], $payment_details, $status = 'pending' ){
-		$payment        = new \EDD_Payment();
+		$payment        = new \calderawp\cfedd\edd\payment\payment();
 
 		$payment->gateway = self::GATEWAY;
 		$payment->status = $status;
@@ -93,7 +131,14 @@ abstract  class payment {
 
 		if ( ! empty( $downloads ) ) {
 			foreach ( $downloads as $download ) {
-				$payment->add_download( trim( $download ) );
+
+				/**
+				 * Filter arguments passed to EDD_Payment->add_download()
+				 *
+				 * @since 0.0.2
+				 */
+				$args = apply_filters( 'cf_eddpro_add_download_to_payment_args', [], $downloads );
+				$payment->add_download( trim( $download ), $args );
 			}
 		}
 
@@ -111,11 +156,11 @@ abstract  class payment {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param \EDD_Payment $payment
+	 * @param \calderawp\cfedd\edd\payment\payment $payment
 	 *
-	 * @return \EDD_Payment
+	 * @return \calderawp\cfedd\edd\payment\payment
 	 */
-	public function save_payment( \EDD_Payment $payment ) {
+	public function save_payment( \calderawp\cfedd\edd\payment\payment $payment ) {
 
 		/**
 		 * Change EDD payment directly before it is saved
@@ -128,6 +173,7 @@ abstract  class payment {
 		$payment = apply_filters( 'cf_edd_pro_pre_save_payment', $payment, $this );
 		$payment->save();
 
+		$this->payment = $payment;
 		$this->payment_id = $payment->ID;
 		return $payment;
 

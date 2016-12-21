@@ -17,7 +17,6 @@ use calderawp\cfedd\edd\create\payment\regular;
 
 class payment extends processor {
 
-
 	/**
 	 * @inheritdoc
 	 * @since 0.0.1
@@ -33,8 +32,6 @@ class payment extends processor {
 		if ( ! empty( $errors ) ) {
 			return $errors;
 		}
-
-
 
 	}
 
@@ -65,9 +62,9 @@ class payment extends processor {
 
 
 		if( $bundler ){
-			$payment = new \EDD_Payment( $payment_id );
+			$payment = new \calderawp\cfedd\edd\payment\payment( $payment_id );
 		}else{
-			$payment = new \EDD_Payment( $payment_id );
+			$payment = new \calderawp\cfedd\edd\payment\payment( $payment_id );
 		}
 
 		$this->add_payment_id_to_transdata( $payment_id, $proccesid );
@@ -75,9 +72,10 @@ class payment extends processor {
 		if( null == $new_status ){
 			$new_status = 'complete';
 		}
+
 		if( $new_status !== $payment->status ){
-			$payment->update_status( $new_status );
-			$payment->save();
+			$payment = $payment->update_status( $new_status );
+
 		}
 
 		if( 'on' === $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
