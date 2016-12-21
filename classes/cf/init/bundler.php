@@ -11,11 +11,9 @@
 
 namespace calderawp\cfedd\cf\init;
 
-
-use calderawp\cfedd\cf\interfaces\init;
 use calderawp\cfedd\cf\processor;
 
-class bundler implements init{
+class bundler extends config {
 
 	/**
 	 * The slug for this processor
@@ -26,10 +24,6 @@ class bundler implements init{
 	 */
 	protected static $slug = 'cf-edd-pro';
 
-
-	public static function get_slug(){
-		return self::$slug;
-	}
 
 	/**
 	 * @inheritdoc

@@ -34,10 +34,28 @@ class endpoint implements \Caldera_Forms_API_Route {
 		]);
 	}
 
+	/**
+	 * Check if form exists
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param $form_id
+	 *
+	 * @return bool
+	 */
 	public function form_exists( $form_id ){
 		return ! empty( \Caldera_Forms_Forms::get_form( $form_id ) );
 	}
 
+	/**
+	 *  Callback for endpoint
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param \WP_REST_Request $request
+	 *
+	 * @return \Caldera_Forms_API_Error|\Caldera_Forms_API_Response
+	 */
 	public function check( \WP_REST_Request $request ){
 		$pricer = factory::pricer( \Caldera_Forms_Forms::get_form( $request[ 'form_id' ] ) );
 		if( is_object( $pricer ) ){

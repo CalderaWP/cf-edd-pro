@@ -12,16 +12,11 @@
 
 namespace calderawp\cfedd\cf\init;
 
-
-use calderawp\cfedd\cf\interfaces\init;
 use calderawp\cfedd\cf\processor;
 
-class payment implements init{
+class payment extends config {
 
 	protected static $slug = 'cf-edd-pro-payment';
-	public static function get_slug(){
-		return self::$slug;
-	}
 
 	/**
 	 * @inheritdoc

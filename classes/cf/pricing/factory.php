@@ -38,10 +38,24 @@ class factory {
 		}
 	}
 
+	/**
+	 * Create API route
+	 *
+	 * @since 0.2.0
+	 *
+	 *  @param \Caldera_Forms_API_Load $api
+	 */
 	public static function create_route( \Caldera_Forms_API_Load $api ){
 		$api->add_route( new endpoint() );
 	}
 
+	/**
+	 * Setup pricing field in front-end
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param array $form
+	 */
 	public static function pricing_field( array $form ){
 		if( ! empty( $form[ 'processors' ] ) ){
 			$bundler = self::find_bundler( $form );
@@ -84,6 +98,16 @@ class factory {
 
 	}
 
+	/**
+	 * Find field ID by magic tag
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param string $magic_slug Magic tag representation of field slug
+	 * @param array $form Form to check in
+	 *
+	 * @return mixed
+	 */
 	protected function find_by_magic_slug( $magic_slug, array $form ){
 		$slug = str_replace( '%', '', $magic_slug );
 		foreach ( $form[ 'fields' ] as $field ){
@@ -93,6 +117,15 @@ class factory {
 		}
 	}
 
+	/**
+	 * Find config for bundle builder processor
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param array $form Form to search in
+	 *
+	 * @return array|bool
+	 */
 	protected static function find_bundler( array  $form ){
 		foreach (  $form[ 'processors' ]  as $processor ) {
 			if ( bundler::get_slug() == $processor[ 'type' ] ) {
@@ -101,8 +134,20 @@ class factory {
 			}
 
 		}
+
+		return false;
+
 	}
 
+	/**
+	 * Find config for dynamic pricing processor
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param array $form Form to search in
+	 *
+	 * @return array|bool
+	 */
 	protected static function find_pricer( array  $form ){
 		foreach (  $form[ 'processors' ]  as $processor ) {
 			if ( pricing::get_slug() == $processor[ 'type' ] ) {
@@ -110,5 +155,8 @@ class factory {
 			}
 		}
 
+		return false;
+
 	}
+
 }

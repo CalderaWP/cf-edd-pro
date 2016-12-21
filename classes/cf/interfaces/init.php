@@ -2,8 +2,6 @@
 /**
  * Interface for processor setups
  *
- * Should this be in Caldera Forms core?
- *
  * @package Caldera_Forms
  * @author    Josh Pollock <Josh@CalderaWP.com>
  * @license   GPL-2.0+

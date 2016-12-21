@@ -9,10 +9,8 @@
  * @copyright 2016 CalderaWP LLC
  */
 namespace calderawp\cfedd\cf\init;
-use calderawp\cfedd\cf\interfaces\init;
 
-
-class pricing implements init{
+class pricing extends config {
 
 	/**
 	 * The slug for this processor
@@ -22,9 +20,7 @@ class pricing implements init{
 	 * @var string
 	 */
 	protected static $slug = 'cf-edd-pro-dynamic-pricing';
-	public static function get_slug(){
-		return self::$slug;
-	}
+
 
 	/**
 	 * @inheritdoc
