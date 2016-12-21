@@ -13,6 +13,7 @@ namespace calderawp\cfedd\cf\init;
 
 
 use calderawp\cfedd\cf\interfaces\init;
+use calderawp\cfedd\cf\processor;
 
 class bundler implements init{
 
@@ -62,14 +63,7 @@ class bundler implements init{
 			'author' => 'Josh Pollock',
 			'template' => CF_EDD_PRO_PATH . '/includes/bundle-config.php',
 			'single' => true,
-			'magic_tags' => [
-				'payment_id',
-				'first_name',
-				'last_name',
-				'email',
-				'user_id',
-				'customer_id'
-			]
+			'magic_tags' => array_keys( processor::TAGS )
 		];
 	}
 

@@ -38,17 +38,9 @@ class bundler extends processor {
 	 * @since 0.0.1
 	 */
 	public function processor( array $config, array $form, $proccesid ) {
-		$return = [
-			'payment_id' => false,
-			'first_name'=> false,
-			'last_name'=> false,
-			'email'=> false,
-			'user_id'=> false,
-			'customer_id'=> false,
-			'total' => false,
-			'subtotal' => 0,
-			'tax' => 0,
-		];
+
+
+		$return = [];
 		$downloads = $this->get_downloads_from_transdata( $proccesid );
 		if( ! empty( $downloads ) ){
 			$bundle_id = $this->data_object->get_value( 'cf-edd-bundle-id' );
@@ -56,24 +48,8 @@ class bundler extends processor {
 			$bundler = new bundle( $this->data_object->get_value( 'cf-edd-pro-total' ), $bundle_id, $downloads, array() );
 			$payment = $bundler->get_payment();
 			$this->add_payment_id_to_transdata(  $payment->ID, $proccesid );
-
 			global  $transdata;
-
-			foreach ( $return as $field => $default ){
-				if( 'payment_id' == $field ){
-					$pf = 'ID';
-				}else{
-					$pf = $field;
-				}
-				if (  isset( $payment->$pf ) ) {
-					$transdata[ $proccesid ][ 'meta' ] [ $this->slug ][ $field ] = $payment->$pf;
-					$return[ $field ] = $payment->$pf;
-				}else{
-					$transdata[ $proccesid ][ 'meta' ] [ $this->slug ][ $field ] = $default;
-				}
-
-			}
-
+			$return = $this->prepare_return( $payment, $transdata, $proccesid );
 
 
 		}

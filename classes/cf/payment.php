@@ -28,7 +28,22 @@ class payment extends processor {
 			return $errors;
 		}
 
-		if( 1 == $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
+
+
+		if ( ! empty( $errors ) ) {
+			return $errors;
+		}
+
+
+
+	}
+
+	/**
+	 * @inheritdoc
+	 * @since 0.0.1
+	 */
+	public function processor( array $config, array $form, $proccesid ) {
+		if( 'on' == $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
 			$bundler = true;
 			$download_id = $this->get_bundle_id_from_transdata( $proccesid );
 			$payment_id = $this->get_payment_id_from_transdata( $proccesid );
@@ -48,44 +63,55 @@ class payment extends processor {
 
 		}
 
-		if ( ! empty( $errors ) ) {
-			return $errors;
-		}
 
-
-
-	}
-
-	/**
-	 * @inheritdoc
-	 * @since 0.0.1
-	 */
-	public function processor( array $config, array $form, $proccesid ) {
-		$payment_id = $this->get_payment_id_from_transdata( $proccesid );
-		if( 1 == $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
+		if( $bundler ){
 			$payment = new \EDD_Payment( $payment_id );
 		}else{
 			$payment = new \EDD_Payment( $payment_id );
 		}
 
+		$this->add_payment_id_to_transdata( $payment_id, $proccesid );
 		$new_status = $this->data_object->get_value( 'cf-edd-pro-payment-status' );
+		if( null == $new_status ){
+			$new_status = 'complete';
+		}
 		if( $new_status !== $payment->status ){
 			$payment->update_status( $new_status );
 			$payment->save();
-			$return = [
-				'payment_id' => false,
-				'first_name'=> false,
-				'last_name'=> false,
-				'email'=> false,
-				'user_id'=> false,
-				'customer_id'=> false,
-			];
-			foreach ( $return as $field ){
-				$return[ $field ] = $payment->$field;
-				$transdata[ $proccesid ][ 'meta'] [ $this->slug ][ $field ] = $payment->$field;
-			}
 		}
 
-		return $return;
+		if( 'on' === $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
+			add_filter( 'caldera_forms_submit_redirect', [ $this, 'redirect_to_payment_details' ], 25, 3 );
+		}
+
+		global $transdata;
+
+		return $this->prepare_return( $payment, $transdata, $proccesid );
+
+	}
+
+	/**
+	 * Redirect to payment details
+	 *
+	 * @uses "caldera_forms_submit_redirect" filter
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param $url
+	 * @param $form
+	 * @param $processid
+	 *
+	 * @return string|void
+	 */
+	public function redirect_to_payment_details( $url, $form, $processid  ){
+		$payment = $this->get_payment_id_from_transdata( $processid );
+		$url = esc_url( get_permalink( edd_get_option( 'purchase_history_page', 'purchase-history' ) ) );
+		if( is_numeric( $payment ) ){
+			$key = edd_get_payment_key( $payment );
+			$url = add_query_arg( 'payment_key', $key, $url );
+		}
+
+		return $url;
+
 	}
 }

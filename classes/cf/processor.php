@@ -14,6 +14,55 @@ namespace calderawp\cfedd\cf;
 
 abstract class processor extends \Caldera_Forms_Processor_Processor {
 
+	/**
+	 * Magic tags, with defaults
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var array
+	 */
+	const TAGS = [
+		'payment_id' => false,
+		'first_name'=> false,
+		'last_name'=> false,
+		'email'=> false,
+		'user_id'=> false,
+		'customer_id'=> false,
+		'total' => false,
+		'subtotal' => 0,
+		'tax' => 0,
+	];
+
+	/**
+	 * Sets up array to be returned by processor callback
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param \EDD_Payment $payment
+	 * @param array $transdata
+	 * @param $proccesid
+	 *
+	 * @return array
+	 */
+	public function prepare_return( \EDD_Payment $payment, array $transdata,$proccesid ){
+		$return = [];
+		foreach ( self::TAGS as $field => $default ){
+			if( 'payment_id' == $field ){
+				$pf = 'ID';
+			}else{
+				$pf = $field;
+			}
+			if (  isset( $payment->$pf ) ) {
+				$transdata[ $proccesid ][ 'meta' ] [ $this->slug ][ $field ] = $payment->$pf;
+				$return[ $field ] = $payment->$pf;
+			}else{
+				$transdata[ $proccesid ][ 'meta' ] [ $this->slug ][ $field ] = $default;
+			}
+
+		}
+
+		return $return;
+	}
 
 	/**
 	 *  Add downloads to transdata

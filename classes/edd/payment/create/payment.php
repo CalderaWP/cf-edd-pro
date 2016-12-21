@@ -13,6 +13,8 @@
 namespace calderawp\cfedd\edd\payment\create;
 
 
+use calderawp\cfedd\edd\create\payment\regular;
+
 abstract  class payment {
 
 	/**
@@ -47,7 +49,7 @@ abstract  class payment {
 	 */
 	public function setup_payment( $total, array $downloads = [], $payment_details, $status = 'pending' ){
 		$payment        = new \EDD_Payment();
-		$payment->total = floatval( $total );
+
 		$payment->gateway = self::GATEWAY;
 		$payment->status = $status;
 
@@ -95,6 +97,10 @@ abstract  class payment {
 			}
 		}
 
+
+		$payment->total = edd_sanitize_amount( $total );
+		$payment->subotal = edd_sanitize_amount( $total );
+
 		return $payment;
 	}
 
@@ -111,6 +117,15 @@ abstract  class payment {
 	 */
 	public function save_payment( \EDD_Payment $payment ) {
 
+		/**
+		 * Change EDD payment directly before it is saved
+		 *
+		 * @since 0.0.1
+		 *
+		 * @param \EDD_Payment Payment object
+		 * @param bundle|regular Object of class creating payment
+		 */
+		$payment = apply_filters( 'cf_edd_pro_pre_save_payment', $payment, $this );
 		$payment->save();
 
 		$this->payment_id = $payment->ID;

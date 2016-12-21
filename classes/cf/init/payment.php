@@ -14,6 +14,7 @@ namespace calderawp\cfedd\cf\init;
 
 
 use calderawp\cfedd\cf\interfaces\init;
+use calderawp\cfedd\cf\processor;
 
 class payment implements init{
 
@@ -39,14 +40,7 @@ class payment implements init{
 			'cf_ver' => '1.4.6',
 			'author' => 'Josh Pollock',
 			'template' => CF_EDD_PRO_PATH . '/includes/payment-config.php',
-			'magic_tags' => [
-				'payment_id',
-				'first_name',
-				'last_name',
-				'email',
-				'user_id',
-				'customer_id'
-			]
+			'magic_tags' => array_keys( processor::TAGS )
 		];
 	}
 
