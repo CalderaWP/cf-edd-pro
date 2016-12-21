@@ -12,6 +12,8 @@ namespace calderawp\cfedd\cf;
 
 
 
+use calderawp\cfedd\edd\payment\payment;
+
 abstract class processor extends \Caldera_Forms_Processor_Processor {
 
 	/**
@@ -61,6 +63,7 @@ abstract class processor extends \Caldera_Forms_Processor_Processor {
 
 		}
 
+		add_action( 'caldera_forms_submit_post_process', [ $this, 'add_entry_to_payment_meta' ], 10, 4 );
 		return $return;
 	}
 
@@ -161,6 +164,26 @@ abstract class processor extends \Caldera_Forms_Processor_Processor {
 		}
 
 		return 0;
+	}
+
+	/**
+	 * After submission update EDD Payment meta with entry ID
+	 *
+	 * @since 0.0.2
+	 *
+	 * @uses "caldera_forms_submit_post_process"
+	 *
+	 * @param $form
+	 * @param $referrer
+	 * @param $process_id
+	 * @param $entry_id
+	 */
+	public function add_entry_to_payment_meta( $form, $referrer, $process_id, $entry_id ){
+		$payment = $this->get_payment_id_from_transdata( $process_id );
+		if( is_numeric( $payment ) ){
+			$payment = new payment( $payment );
+			$payment->update_meta( 'caldera_forms_entry_id', $entry_id );
+		}
 	}
 
 

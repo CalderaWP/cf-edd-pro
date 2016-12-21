@@ -19,8 +19,6 @@ use calderawp\cfedd\init;
 
 class bundle extends payment {
 
-
-
 	/**
 	 * bundle constructor.
 	 *
