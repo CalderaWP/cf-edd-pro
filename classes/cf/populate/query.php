@@ -116,7 +116,7 @@ class query {
 		 * @param array $form Config for the form.
 		 *
 		 */
-		$args = apply_filters( 'cf_eddpro_autopopulate_options', [
+		$args = apply_filters( 'cf_edd_pro_autopopulate_options', [
 			'post_type' => 'download'
 		], $field, $form  );
 		return get_posts( $args );

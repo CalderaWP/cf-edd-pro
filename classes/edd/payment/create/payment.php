@@ -137,7 +137,7 @@ abstract  class payment {
 				 *
 				 * @since 0.0.2
 				 */
-				$args = apply_filters( 'cf_eddpro_add_download_to_payment_args', [], $downloads );
+				$args = apply_filters( 'cf_edd_pro_add_download_to_payment_args', [], $downloads );
 				$payment->add_download( trim( $download ), $args );
 			}
 		}

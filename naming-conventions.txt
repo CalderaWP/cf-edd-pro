@@ -1,0 +1,5 @@
+Plugin Name -- Easy Digital Downloads For Caldera Forms - Pro version
+Text domain -- cf-edd-pro
+Function prefix -- cf_edd_pro
+Root namespace -- calderawp\cfedd
+Hook Prefix -- cf_cf_edd_pro
