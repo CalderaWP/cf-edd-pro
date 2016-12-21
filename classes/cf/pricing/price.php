@@ -76,8 +76,9 @@ class price {
 		if (  is_null( $count ) && ! empty( $this->bundler_config[ 'group' ] ) ) {
 			$downloads = [ ];
 			foreach ( $this->bundler_config[ 'group' ] as $field ) {
-				$_download = \Caldera_Forms::do_magic_tags( $field[ 'download' ] );
-				if ( is_numeric( $_download ) && 'download' == get_post_status( $_download ) ) {
+				$field_id = cf_edd_pro_find_by_magic_slug( $field[ 'download' ], $this->form );
+				$_download = \Caldera_Forms::get_field_data( $field_id, $this->form );
+				if ( is_numeric( $_download ) && 'download' == get_post_type( $_download ) ) {
 					$downloads[] = $_download;
 				}
 			}
@@ -97,7 +98,7 @@ class price {
 			}
 
 			if( ! $found ){
-				end( $this->pricer_config[ 'last' ] );
+				end( $this->pricer_config );
 				$price = $this->pricer_config[ key( $this->pricer_config ) ][ 'cost' ];
 			}
 

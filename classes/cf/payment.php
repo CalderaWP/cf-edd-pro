@@ -40,6 +40,11 @@ class payment extends processor {
 	 * @since 0.0.1
 	 */
 	public function processor( array $config, array $form, $proccesid ) {
+		$total = $this->get_price_from_transdata( $proccesid );
+		if ( ! $total ) {
+			$total = $this->data_object->get_value( 'cf-edd-pro-payment-total' );
+		}
+
 		if( 'on' == $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
 			$bundler = true;
 			$download_id = $this->get_bundle_id_from_transdata( $proccesid );
@@ -54,11 +59,6 @@ class payment extends processor {
 			$bundler = false;
 			$download_id = $this->data_object->get_value( 'cf-edd-pro-payment-download' );
 			$payment_details = [];
-			$total = $this->get_price_from_transdata( $proccesid );
-			if ( ! $total ) {
-				$total = $this->data_object->get_value( 'cf-edd-pro-payment-total' );
-			}
-
 			$payment_id = ( new regular( $total, [ $download_id ], $payment_details ) )->get_payment_id();
 			$this->add_payment_id_to_transdata( $payment_id, $proccesid );
 

@@ -18,7 +18,12 @@ class pricing extends  processor {
 	public function pre_processor( array $config, array $form, $proccesid ) {
 		$pricer = factory::pricer( $form );
 		if( is_object( $pricer ) ){
-			$this->add_price_to_transdata( $proccesid, $pricer->do_math() );
+			$price = $pricer->do_math();
+			$price = edd_sanitize_amount( $price );
+
+			$this->add_price_to_transdata( $proccesid, $price );
+			$field_id = cf_edd_pro_find_by_magic_slug( $config[ 'cf-edd-pro-dynamic-pricing-price-field' ], $form );
+			\Caldera_Forms::set_field_data(  $field_id, $price, $form );
 		}
 	}
 

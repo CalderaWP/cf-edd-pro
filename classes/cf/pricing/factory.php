@@ -63,11 +63,11 @@ class factory {
 		}
 
 		if( ! empty( $bundler ) && ! empty( $pricer ) ){
-			$price_field = self::find_by_magic_slug( $pricer[ 'cf-edd-pro-dynamic-pricing-price-field' ], $form );
+			$price_field = cf_edd_pro_find_by_magic_slug( $pricer[ 'cf-edd-pro-dynamic-pricing-price-field' ], $form );
 			if (  $price_field  ) {
 				$download_fields = [ ];
 				foreach ( $bundler[ 'group' ] as $group ) {
-					$download_fields[] = self::find_by_magic_slug( $group[ 'download' ], $form );
+					$download_fields[] = cf_edd_pro_find_by_magic_slug( $group[ 'download' ], $form );
 
 				}
 
@@ -96,25 +96,6 @@ class factory {
 
 
 
-	}
-
-	/**
-	 * Find field ID by magic tag
-	 *
-	 * @since 0.2.0
-	 *
-	 * @param string $magic_slug Magic tag representation of field slug
-	 * @param array $form Form to check in
-	 *
-	 * @return mixed
-	 */
-	protected function find_by_magic_slug( $magic_slug, array $form ){
-		$slug = str_replace( '%', '', $magic_slug );
-		foreach ( $form[ 'fields' ] as $field ){
-			if( $slug === $field[ 'slug' ] ){
-				return $field[ 'ID' ];
-			}
-		}
 	}
 
 	/**

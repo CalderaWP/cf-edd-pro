@@ -60,7 +60,7 @@ class query {
 					$this->add_price( $field[ 'ID' ], $post->ID, $form[ 'ID' ] );
 
 				}
-				$field = \Caldera_Forms::format_select_options( $field );
+				//$field = \Caldera_Forms::format_select_options( $field );
 			}
 
 

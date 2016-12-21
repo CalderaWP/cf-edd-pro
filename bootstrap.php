@@ -40,3 +40,23 @@ add_action( 'plugins_loaded', function(){
 
 
 }, 2 );
+
+
+/**
+ * Find field ID by magic tag
+ *
+ * @since 0.2.0
+ *
+ * @param string $magic_slug Magic tag representation of field slug
+ * @param array $form Form to check in
+ *
+ * @return mixed
+ */
+function cf_edd_pro_find_by_magic_slug( $magic_slug, array $form ){
+	$slug = str_replace( '%', '', $magic_slug );
+	foreach ( $form[ 'fields' ] as $field ){
+		if( $slug === $field[ 'slug' ] ){
+			return $field[ 'ID' ];
+		}
+	}
+}
