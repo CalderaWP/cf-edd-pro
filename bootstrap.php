@@ -37,6 +37,8 @@ add_action( 'plugins_loaded', function(){
 		});
 	});
 
+	\calderawp\cfeddfields\setup::add_hooks();
+
 
 
 }, 2 );
