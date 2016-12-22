@@ -84,6 +84,8 @@ class price {
 			}
 
 			$count = count( $downloads );
+		}else{
+			$count = absint( $count );
 		}
 
 
