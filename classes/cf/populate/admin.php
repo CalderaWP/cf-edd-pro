@@ -12,24 +12,8 @@
 namespace calderawp\cfedd\cf\populate;
 
 
-class admin extends  \Caldera_Forms_Admin_APSetup {
+class admin extends  \calderawp\cfeddfields\fields\populate\admin {
 
-
-	/**
-	 * @inheritdoc
-	 */
-	public function add_type() {
-
-		printf( '<option value="edd"{{#is auto_type value="edd"}} selected="selected"{{/is}}>%s</option>', esc_html__( 'Easy Digital Downloads', 'cf-eddpro' ) );
-
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function add_options() {
-		return '<p class="description">' . esc_html__( 'Will use all downloads', 'cf-eddpro' ) . '</p>';
-
-	}
+	/** Extending empty and leaving this as a stub for future pro only options */
 
 }

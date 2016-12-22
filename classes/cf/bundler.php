@@ -2,7 +2,7 @@
 /**
  * Bundle builder processor
  *
- * @package Caldera_Forms
+ * @package CF_EDD_Pro
  * @author    Josh Pollock <Josh@CalderaWP.com>
  * @license   GPL-2.0+
  * @link

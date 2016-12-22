@@ -108,5 +108,37 @@
             }
         ],
         "description": "Library for adding grouped configs to Caldera Forms processor UI"
+    },
+    {
+        "name": "calderawp/cf-edd-fields",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/CalderaWP/cf-edd-fields",
+            "reference": "5738ef9d37bfc82c30825394ba90ffd6238e9a5b"
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2016-12-22 00:39:23",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "calderawp\\cfeddfields\\": "src"
+            }
+        },
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Josh Pollock",
+                "homepage": "https://JoshPress.net",
+                "role": "Developer"
+            }
+        ],
+        "description": "Field auto-population shared between"
     }
 ]

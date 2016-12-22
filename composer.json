@@ -18,13 +18,18 @@
     {
       "type": "git",
       "url": "https://github.com/CalderaWP/cf-grouped-configs"
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/CalderaWP/cf-edd-fields"
     }
   ],
   "require": {
     "php": ">=5.4.0",
     "calderawp/dismissible-notice": "dev-master",
     "calderawp/licensing-helper" : "dev-master",
-    "calderawp/cf-grouped-configs": "1.1.0"
+    "calderawp/cf-grouped-configs": "1.1.0",
+    "calderawp/cf-edd-fields": "dev-master"
   },
   "autoload": {
     "psr-4": {

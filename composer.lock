@@ -4,9 +4,39 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cbfaa2dc4339ba07b7b8f0e3de385377",
-    "content-hash": "81b59bc795223cb4298c4224aa34b990",
+    "hash": "ce03dcdd45872804b3a9b4ed3fcd907d",
+    "content-hash": "9cd251bad891a8b336c05e96e1fa8f0a",
     "packages": [
+        {
+            "name": "calderawp/cf-edd-fields",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CalderaWP/cf-edd-fields",
+                "reference": "5738ef9d37bfc82c30825394ba90ffd6238e9a5b"
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "calderawp\\cfeddfields\\": "src"
+                }
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Pollock",
+                    "homepage": "https://JoshPress.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Field auto-population shared between",
+            "time": "2016-12-22 00:39:23"
+        },
         {
             "name": "calderawp/cf-grouped-configs",
             "version": "1.1.0",
@@ -117,7 +147,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "calderawp/dismissible-notice": 20,
-        "calderawp/licensing-helper": 20
+        "calderawp/licensing-helper": 20,
+        "calderawp/cf-edd-fields": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
