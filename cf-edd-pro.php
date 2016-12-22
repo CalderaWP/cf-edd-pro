@@ -3,7 +3,7 @@
 Plugin name: Caldera Forms EDD Pro
 Version: 0.0.2
 Plugin URI:  https://calderaforms.com/downloads/easy-digital-downloads-for-caldera-forms-pro
-Description: Accept payments and credit cards via Authorize.net
+Description: Sell Easy Digital Downloads products with Caldera Forms
 Author:      Josh Pollock for CalderaWP LLC
 Author URI:  https://CalderaForms.com
 License:     GPLv2+
@@ -37,7 +37,7 @@ define( 'CF_EDD_PRO_CORE',    dirname( __FILE__ )  );
 
 
 // Load instance
-add_action( 'plugins_loaded', 'cf_edd_pro_init', 25 );
+add_action( 'plugins_loaded', 'cf_edd_pro_init', 0 );
 function cf_edd_pro_init(){
 	global $wp_version;
 	$edd_version = $cf_version = false;
@@ -100,7 +100,7 @@ function cf_edd_pro_init(){
 
 	}else{
 		//bootstrap plugin
-		require_once( CF_EDD_PRO_PATH . 'bootstrap.php' );
+		require_once( CF_EDD_PRO_PATH . '/bootstrap.php' );
 
 	}
 
