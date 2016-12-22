@@ -36,6 +36,7 @@ class payment extends config {
 			'name' => __( 'Easy Digital Downloads Payment', 'cf-edd-pro' ),
 			'description' => __( 'Sell an EDD download', 'cf-edd-pro' ),
 			'cf_ver' => '1.4.6',
+			'icon' => CF_EDD_PRO_URL . '/icon.png',
 			'author' => 'Josh Pollock',
 			'template' => CF_EDD_PRO_PATH . '/includes/payment-config.php',
 			'magic_tags' => array_keys( processor::TAGS )

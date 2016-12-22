@@ -56,6 +56,7 @@ class pricing extends config {
 			'description' => __( 'Set Pricing Dynamically For The EDD Bundle Builder', 'cf-edd-pro' ),
 			'cf_ver' => '1.4.6',
 			'author' => 'Josh Pollock',
+			'icon' => CF_EDD_PRO_URL . '/icon.png',
 			'template' => CF_EDD_PRO_PATH . '/includes/dynamic-pricing-config.php',
 			'single' => true,
 

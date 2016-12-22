@@ -59,6 +59,7 @@ class bundler extends config {
 			'description' => __( 'Sell dynamically created bundles', 'cf-edd-pro' ),
 			'cf_ver' => '1.4.6',
 			'author' => 'Josh Pollock',
+			'icon' => CF_EDD_PRO_URL . '/icon.png',
 			'template' => CF_EDD_PRO_PATH . '/includes/bundle-config.php',
 			'single' => true,
 			'magic_tags' => array_keys( processor::TAGS )
