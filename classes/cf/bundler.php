@@ -75,6 +75,7 @@ class bundler extends processor {
 	 */
 	protected function prepare_bundle(  array  $config, $form ){
 		$downloads = $this->get_downloads( $config, $form );
+		$downloads = array_filter( $downloads );
 
 		$min = $this->data_object->get_value( 'cf-edd-pro-min' );
 		$max = $this->data_object->get_value( 'cf-edd-pro-max' );
@@ -84,6 +85,8 @@ class bundler extends processor {
 		if( empty( $max ) || ! is_numeric( $max ) ){
 			$max = count( $config[ 'group' ] );
 		}
+
+
 		if( $min < count( $downloads ) ){
 			/**
 			 * Change error message for when there are not enough downloads are in bundle
@@ -107,7 +110,7 @@ class bundler extends processor {
 			 * @param array $config Processor config
 			 * @param array $form Form Config
 			 */
-			$this->data_object->add_error( apply_filters( 'cf_edd_pro_bundle_too_many_error', __( 'Too many downlaods downloads added to bundle', 'cf-edd-pro' ), $config, $form ) );
+			$this->data_object->add_error( apply_filters( 'cf_edd_pro_bundle_too_many_error', __( 'Too many downloads downloads added to bundle', 'cf-edd-pro' ), $config, $form ) );
 
 		}
 
