@@ -1,7 +1,7 @@
 <?php
 /**
 Plugin name: Caldera Forms EDD Pro
-Version: 0.0.2
+Version: 1.0.0
 Plugin URI:  https://calderaforms.com/downloads/easy-digital-downloads-for-caldera-forms-pro
 Description: Sell Easy Digital Downloads products with Caldera Forms
 Author:      Josh Pollock for CalderaWP LLC
@@ -30,7 +30,7 @@ Domain Path: /languages
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-define( 'CF_EDD_PRO_VER', '0.0.2' );
+define( 'CF_EDD_PRO_VER', '1.0.0' );
 define( 'CF_EDD_PRO_URL',     plugin_dir_url( __FILE__ ) );
 define( 'CF_EDD_PRO_PATH',    dirname( __FILE__ ) . '/' );
 define( 'CF_EDD_PRO_CORE',    dirname( __FILE__ )  );
