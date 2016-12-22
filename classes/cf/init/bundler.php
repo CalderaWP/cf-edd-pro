@@ -146,7 +146,7 @@ class bundler extends config {
 	 *
 	 * @return array
 	 */
-	public function translation_strings(){
+	public static function translation_strings(){
 
 		return [
 			'remove_confirm' => __( 'Are you sure you want to remove this download field?', 'cf-edd-pro' ),
