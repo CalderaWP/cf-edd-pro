@@ -24,13 +24,18 @@ class bundler extends processor {
 	 */
 	public function pre_processor( array $config, array $form, $proccesid ) {
 		$this->set_data_object_initial( $config, $form );
-		$downloads = $this->prepare_bundle( $config, $form );
 		$errors = $this->data_object->get_errors();
 		if ( ! empty( $errors ) ) {
 			return $errors;
 		}
+		$downloads = $this->prepare_bundle( $config, $form );
 		$this->setup_transata( $proccesid );
 		$this->add_downloads_to_transdata( $downloads, $proccesid );
+
+		$errors = $this->data_object->get_errors();
+		if ( ! empty( $errors ) ) {
+			return $errors;
+		}
 	}
 
 	/**
@@ -54,7 +59,6 @@ class bundler extends processor {
 			$this->add_payment_id_to_transdata( $create->get_payment_id(), $proccesid );
 			global  $transdata;
 			$return = $this->prepare_return( $create->get_payment(), $transdata, $proccesid );
-
 
 
 		}
