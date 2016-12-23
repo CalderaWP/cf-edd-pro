@@ -46,7 +46,19 @@ add_action( 'plugins_loaded', function(){
 	/** Setup EDD SL integration */
 	\calderawp\cfeddfields\setup::add_hooks();
 
+    //software licensing
+    add_action( 'admin_init', function(){
+        $plugin = array(
+            'name'      => 'Easy Digital Downloads For Caldera Forms',
+            'slug'      => 'easy-digital-downloads-for-caldera-forms-pro',
+            'url'       => 'https://calderaforms.com/',
+            'version'   => CF_EDD_PRO_VER,
+            'key_store' => 'cf_users_license',
+            'file'      => CF_EDD_PRO_CORE
+        );
 
+        new \calderawp\licensing_helper\licensing( $plugin );
+    } );
 }, 2 );
 
 
