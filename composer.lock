@@ -13,7 +13,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CalderaWP/cf-edd-fields",
-                "reference": "eae6f1eefe574e7255055fed57dba5dd8e3e097a"
+                "reference": "9b5962f52eaad36d274a79ec4c6c80d8aa7ef757"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -35,7 +35,7 @@
                 }
             ],
             "description": "Field auto-population shared between",
-            "time": "2016-12-22 05:17:51"
+            "time": "2016-12-23 20:34:45"
         },
         {
             "name": "calderawp/cf-grouped-configs",
