@@ -91,7 +91,7 @@ class bundler extends processor {
 		}
 
 
-        if( $min > count( $downloads ) ){
+        if( false == apply_filters( 'cf_edd_pro_bypass_min_check', false, $form  ) && $min > count( $downloads ) ){
 			/**
 			 * Change error message for when there are not enough downloads are in bundle
 			 *
@@ -104,7 +104,7 @@ class bundler extends processor {
 			$this->data_object->add_error( apply_filters( 'cf_edd_pro_bundle_not_enough_error', __( 'Not enough downloads added to bundle', 'cf-edd-pro' ), $config, $form ) );
 		}
 
-		if( $max > count( $downloads ) ){
+		if( false == apply_filters( 'cf_edd_pro_bypass_max_check', false, $form  ) && $max > count( $downloads ) ){
 			/**
 			 * Change error message for when there are too many downloads in bundle
 			 *
