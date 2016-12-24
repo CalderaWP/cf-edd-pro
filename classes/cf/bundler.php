@@ -91,7 +91,7 @@ class bundler extends processor {
 		}
 
 
-		if( $min < count( $downloads ) ){
+        if( $min > count( $downloads ) ){
 			/**
 			 * Change error message for when there are not enough downloads are in bundle
 			 *
