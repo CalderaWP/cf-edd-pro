@@ -29,7 +29,7 @@
     "calderawp/dismissible-notice": "dev-master",
     "calderawp/licensing-helper" : "dev-master",
     "calderawp/cf-grouped-configs": "1.1.0",
-    "calderawp/cf-edd-fields": "dev-master"
+    "calderawp/cf-edd-fields": "1.0.1"
   },
   "autoload": {
     "psr-4": {

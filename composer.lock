@@ -4,16 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ce03dcdd45872804b3a9b4ed3fcd907d",
-    "content-hash": "9cd251bad891a8b336c05e96e1fa8f0a",
+    "hash": "65a92102a4a0d584e566f0bce9acb211",
+    "content-hash": "16190c91b633723b9a5849e5b7dcd69d",
     "packages": [
         {
             "name": "calderawp/cf-edd-fields",
-            "version": "dev-master",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CalderaWP/cf-edd-fields",
-                "reference": "9b5962f52eaad36d274a79ec4c6c80d8aa7ef757"
+                "reference": "307926c5e9d674473cd6bf0db3274b6af42b9e32"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -35,7 +35,7 @@
                 }
             ],
             "description": "Field auto-population shared between",
-            "time": "2016-12-23 20:34:45"
+            "time": "2017-01-10 17:08:48"
         },
         {
             "name": "calderawp/cf-grouped-configs",
@@ -147,8 +147,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "calderawp/dismissible-notice": 20,
-        "calderawp/licensing-helper": 20,
-        "calderawp/cf-edd-fields": 20
+        "calderawp/licensing-helper": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
