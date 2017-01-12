@@ -1,7 +1,7 @@
 <?php
 /**
 Plugin name: Caldera Forms EDD Pro
-Version: 1.0.0-b-1
+Version: 1.0.2
 Plugin URI:  https://calderaforms.com/downloads/easy-digital-downloads-for-caldera-forms-pro
 Description: Sell Easy Digital Downloads products with Caldera Forms
 Author:      Josh Pollock for CalderaWP LLC
@@ -30,7 +30,7 @@ Domain Path: /languages
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-define( 'CF_EDD_PRO_VER', '1.0.0-b-1' );
+define( 'CF_EDD_PRO_VER', '1.0.2' );
 define( 'CF_EDD_PRO_URL',     plugin_dir_url( __FILE__ ) );
 define( 'CF_EDD_PRO_PATH',    dirname( __FILE__ ) . '/' );
 define( 'CF_EDD_PRO_CORE',    dirname( __FILE__ )  );
@@ -45,17 +45,17 @@ function cf_edd_pro_init(){
 	$wp_check = version_compare( $wp_version, '4.5', '>=' );
 	$edd_installed = defined( 'EDD_VERSION' );
 	if ( $edd_installed ) {
-		$edd_version = version_compare( '2.5', EDD_VERSION );
+		$edd_version = version_compare( '2.5', EDD_VERSION, '<=');
 	}
 	$cf_installed = defined( 'CFCORE_VER' );
 	if( $cf_installed ){
-		$cf_version = version_compare( '1.4.7', CFCORE_VER );
+		$cf_version = version_compare( '1.4.7', CFCORE_VER, '<=' );
 	}
 	if ( ! $php_check  || !  $wp_check || ! $edd_version || ! $cf_version ) {
 
 		//you are not going to space today!
 		if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			include_once CAEQ_PATH . 'vendor/calderawp/dismissible-notice/src/functions.php';
+			include_once CF_EDD_PRO_PATH . 'vendor/calderawp/dismissible-notice/src/functions.php';
 		}
 
 		if ( is_admin() ) {
