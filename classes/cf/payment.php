@@ -13,7 +13,8 @@
 namespace calderawp\cfedd\cf;
 
 
-use calderawp\cfedd\edd\create\payment\regular;
+
+use calderawp\cfedd\edd\payment\create\regular;
 
 class payment extends processor {
 
@@ -87,6 +88,18 @@ class payment extends processor {
 		}
 
 		global $transdata;
+
+		/**
+		 * Runs after an EDD payment is created using Caldera Forms
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param  \calderawp\cfedd\edd\payment\payment Payment Object (extends EDD_Payment)
+		 * @param \Caldera_Forms_Processor_Get_Data $data Processor data
+		 * @param array $config Processor config
+		 * @param array $form Form config
+		 */
+		do_action( 'cf_cf_edd_pro_payment_created', $payment, $this->data_object, $config, $form );
 
 		return $this->prepare_return( $payment, $transdata, $proccesid );
 

@@ -4,16 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "65a92102a4a0d584e566f0bce9acb211",
-    "content-hash": "16190c91b633723b9a5849e5b7dcd69d",
+    "hash": "b3d053a1dfd9d847e429034759a04a6a",
+    "content-hash": "73d80cb7c00ff8026e348358308c71f6",
     "packages": [
         {
             "name": "calderawp/cf-edd-fields",
-            "version": "1.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CalderaWP/cf-edd-fields",
-                "reference": "307926c5e9d674473cd6bf0db3274b6af42b9e32"
+                "reference": "7ad2e50a1137f0ee332eb8bef7d14a25e431b61b"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -35,7 +35,7 @@
                 }
             ],
             "description": "Field auto-population shared between",
-            "time": "2017-01-10 17:08:48"
+            "time": "2017-01-14 00:19:24"
         },
         {
             "name": "calderawp/cf-grouped-configs",

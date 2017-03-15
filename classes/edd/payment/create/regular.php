@@ -9,7 +9,8 @@
  * @copyright 2016 CalderaWP LLC
  */
 
-namespace calderawp\cfedd\edd\create\payment;
+namespace calderawp\cfedd\edd\payment\create;
+
 
 class regular extends payment {
 

@@ -13,7 +13,6 @@
 namespace calderawp\cfedd\edd\payment\create;
 
 
-use calderawp\cfedd\edd\create\payment\regular;
 
 abstract  class payment {
 
@@ -71,6 +70,27 @@ abstract  class payment {
 			$this->payment = new \calderawp\cfedd\edd\payment\payment( $this->payment_id );
 		}
 		return $this->payment;
+	}
+
+	/**
+	 * Get necessary user info by user ID
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param $id
+	 *
+	 * @return array
+	 */
+	public function user_info_from_id( $id ){
+		$user = get_user_by( 'ID', $id );
+		if( $user ){
+			return [
+				'first_name' => $user->user_firstname,
+				'last_name'  => $user->user_lastname,
+				'email' => $user->user_email,
+			];
+		}
+
 	}
 
 	/**
@@ -178,6 +198,35 @@ abstract  class payment {
 		return $payment;
 
 	}
+
+	/**
+	 * Find EDD customer by user ID or email
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param int $user_id User ID
+	 * @param string $email Email
+	 *
+	 * @return bool|\EDD_Customer
+	 */
+	public function find_customer( $user_id = 0, $email = '' ){
+		if( $user_id && is_object( $user = get_user_by( 'ID', $user_id ) )){
+			$_customer = new \EDD_Customer( $user_id, true );
+			if( $_customer ){
+				return $_customer;
+			}
+
+		}
+
+		$_customer = new \EDD_Customer( $email, false );
+
+		if( $_customer ){
+			return $_customer;
+		}
+
+		return false;
+	}
+
 
 	/**
 	 * Checks if payment is object and not WP_Error
