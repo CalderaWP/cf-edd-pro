@@ -98,8 +98,10 @@ class payment extends processor {
 		 * @param \Caldera_Forms_Processor_Get_Data $data Processor data
 		 * @param array $config Processor config
 		 * @param array $form Form config
+		 * @param int $download_id
+		 * @param strin $proccesid
 		 */
-		do_action( 'cf_cf_edd_pro_payment_created', $payment, $this->data_object, $config, $form );
+		do_action( 'cf_cf_edd_pro_payment_created', $payment, $this->data_object, $config, $form, $download_id, $proccesid );
 
 		return $this->prepare_return( $payment, $transdata, $proccesid );
 
