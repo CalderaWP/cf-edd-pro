@@ -12,6 +12,8 @@
 namespace calderawp\cfedd\cf\pricing;
 
 
+use calderawp\eddBundleUpdates\handlers\email;
+
 class price {
 
 	/**
@@ -101,7 +103,12 @@ class price {
 
 			if( ! $found ){
 				end( $this->pricer_config );
-				$price = $this->pricer_config[ key( $this->pricer_config ) ][ 'cost' ];
+				$key = key( $this->pricer_config[ 'group'] );
+				if (  ! empty( $this->pricer_config[ 'group' ][ $key ] ) ) {
+					$price = $this->pricer_config[ 'group' ][ $key ][ 'cost' ];
+				}else{
+					$price = 0;
+				}
 			}
 
 		}

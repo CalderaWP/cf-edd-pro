@@ -1,14 +1,26 @@
 function CFEDDProDynPrice(config, $) {
     var $price = $("[data-field='" + config.price_field + "']");
+    var self = this;
 
-    var getPrice = function () {
+    this.getFields = function () {
+        return config.download_fields;
+    };
+
+    this.getCount = function () {
         var count = 0;
-        $.each(CF_EDD_PRO.download_fields, function (i, field) {
+        $.each(config.download_fields, function (i, field) {
             if ($(document.getElementById(field)).val()) {
                 count++;
             }
 
         });
+
+        return count;
+    };
+
+    this.getPrice = function () {
+        var count = self.getCount();
+
         $.post({
             url: config.api,
             data: {
@@ -24,13 +36,25 @@ function CFEDDProDynPrice(config, $) {
             $( document ).trigger( 'cf.add' );
         });
     };
-    $.each(config.download_fields, function (i, field) {
-        $(document.getElementById(field)).on('change', getPrice);
-    });
+
+    this.bindHandlers = function () {
+        $.each( config.download_fields, function (i, field) {
+            $(document.getElementById(field)).on('change', function () {
+                self.getPrice();
+            } );
+        });
+    };
+
+    this.bindHandlers();
+    this.getPrice();
 }
 
 window.addEventListener("load", function () {
     if ('object' == typeof  CF_EDD_PRO) {
-        new CFEDDProDynPrice( CF_EDD_PRO, jQuery);
+        if( 'object' != typeof  window.cf_edd_pro ){
+            window.cf_edd_pro = {};
+        }
+
+        window.cf_edd_pro[ CF_EDD_PRO.form_id ] = new CFEDDProDynPrice( CF_EDD_PRO, jQuery);
     }
 });

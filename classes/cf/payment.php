@@ -45,7 +45,9 @@ class payment extends processor {
 		if ( ! $total ) {
 			$total = $this->data_object->get_value( 'cf-edd-pro-payment-total' );
 		}
+		$total = round( $total, 2 );
 
+		$payment_details[ 'user_info' ] = $this->make_user_info();
 		if( 'on' == $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
 			$bundler = true;
 			$download_id = $this->get_bundle_id_from_transdata( $proccesid );
@@ -59,7 +61,7 @@ class payment extends processor {
 		}else{
 			$bundler = false;
 			$download_id = $this->data_object->get_value( 'cf-edd-pro-payment-download' );
-			$payment_details = [];
+
 			$payment_id = ( new regular( $total, [ $download_id ], $payment_details ) )->get_payment_id();
 			$this->add_payment_id_to_transdata( $payment_id, $proccesid );
 
@@ -129,6 +131,38 @@ class payment extends processor {
 		}
 
 		return $url;
+
+	}
+
+	protected function make_user_info(){
+		$email = $this->data_object->get_value( 'cf-edd-email' );
+		$user_info = [
+			'first_name' => '',
+			'last_name'  => '',
+			'email' => '',
+		];
+		$user = false;
+		if( is_email(  $email ) ){
+			$user_info[ 'email' ] = $email;
+			$user = get_user_by( 'email', $email );
+
+		}
+
+		if( ! $user ){
+			$user = get_user_by( 'ID', get_current_user_id() );
+		}
+
+		if( $user ){
+			$user_info = [
+				'first_name' => $user->user_firstname,
+				'last_name'  => $user->user_lastname,
+				'email' => $user->user_email,
+			];
+		}
+
+		return $user_info;
+
+
 
 	}
 }

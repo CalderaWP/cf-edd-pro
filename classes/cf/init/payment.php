@@ -93,6 +93,13 @@ class payment extends config {
 				],
 				'default' => '1'
 			],
+			[
+				'id' => 'cf-edd-email',
+				'label' => __( 'Email', 'edd-pro'),
+				'desc' => __( 'Customer Email', 'cf-edd-pro' ),
+				'type' => 'advanced',
+				'allow_types' => [ 'email' ],
+			],
 		];
 
 	}
