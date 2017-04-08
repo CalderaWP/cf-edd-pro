@@ -36,10 +36,7 @@ class pricing extends config {
 
 			if ( is_array( $form ) ) {
 				new \calderawp\cf\groupconfig\ui( $form, self::$slug, self::translation_strings(), self::download_group_fields()  );
-				wp_enqueue_script( 'cf-edd-pro', CF_EDD_PRO_URL . '/assets/admin.js', [
-					'jquery',
-					'cf-group-config'
-				], CF_EDD_PRO_VER );
+				static::enqueue_admin_js();
 			}
 		}
 

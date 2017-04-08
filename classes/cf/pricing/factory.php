@@ -77,8 +77,11 @@ class factory {
 					$field = $field . '_' . $current_form_count;
 				}
 
-
-				wp_enqueue_script( 'cf-edd-pro', CF_EDD_PRO_URL . '/assets/cf-edd-pro.js', [ 'jquery' ], CF_EDD_PRO_VER );
+				$src = CF_EDD_PRO_URL . 'assets/cf-edd-pro.js';
+				if ( \Caldera_Forms_Render_Assets::should_minify() ) {
+					$src = CF_EDD_PRO_URL . 'assets/build/cf-edd-pro.min.js';
+				}
+				wp_enqueue_script( 'cf-edd-pro', $src, [ 'jquery' ], CF_EDD_PRO_VER );
 				$vars = [
 					'price_field' => $price_field,
 					'download_fields' => $download_fields,

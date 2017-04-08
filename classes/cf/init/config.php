@@ -36,4 +36,21 @@ abstract  class config implements init{
 	public static function get_slug(){
 		return static::$slug;
 	}
+
+	/**
+	 * Enqueue admin JS
+	 *
+	 * @since 1.1.0
+	 */
+	protected static function enqueue_admin_js(){
+		$src = CF_EDD_PRO_URL . '/assets/admin.js';
+		if ( \Caldera_Forms_Render_Assets::should_minify() ) {
+			$src = CF_EDD_PRO_URL . '/assets/build/admin.min.js';
+		}
+
+		wp_enqueue_script( 'cf-edd-pro', $src, [
+			'jquery',
+			'cf-group-config'
+		], CF_EDD_PRO_VER );
+	}
 }

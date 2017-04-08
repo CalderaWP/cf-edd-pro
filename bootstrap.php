@@ -34,6 +34,8 @@ add_action( 'plugins_loaded', function(){
 
 	/** Add REST API endpoint for dynamic pricing */
 	add_action( 'rest_api_init', function(){
+		//backwards compat for 1.4.x
+		//@TODO remove
 		if( ! did_action( 'caldera_forms_rest_api_init' ) ){
 			add_action( 'rest_api_init', [ 'Caldera_Forms', 'init_rest_api' ], 25 );
 		}
@@ -41,6 +43,16 @@ add_action( 'plugins_loaded', function(){
 		add_action( 'caldera_forms_rest_api_pre_init', function( $api ){
 			\calderawp\cfedd\cf\pricing\factory::create_route( $api );
 		});
+	});
+
+	/**  Add REST API endpoint for discount check*/
+	add_action( 'caldera_forms_rest_api_pre_init', function( $api ){
+		$api->add_route( new \calderawp\cfedd\edd\discount\endpoint() );
+	}, 25 );
+
+	add_action( 'init', function(){
+		$discount_field = new \calderawp\cfedd\edd\discount\field();
+		$discount_field->add_hooks();
 	});
 
 	/** Setup EDD SL integration */
@@ -74,7 +86,7 @@ add_action( 'plugins_loaded', function(){
  */
 function cf_edd_pro_find_by_magic_slug( $magic_slug, array $form ){
 	$slug = str_replace( '%', '', $magic_slug );
-	foreach ( $form[ 'fields' ] as $field ){
+	foreach ( Caldera_Forms_Forms::get_fields( $form, false ) as $field ){
 		if( $slug === $field[ 'slug' ] ){
 			return $field[ 'ID' ];
 		}

@@ -24,7 +24,7 @@ class endpoint implements \Caldera_Forms_API_Route {
 			'args' => [
 				'count' => [
 					'required' => true,
-					'sanitization_callback' => 'absint',
+					'sanitize_callback' => 'absint',
 				],
 				'form_id' => [
 					'required' => 'true',

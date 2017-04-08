@@ -45,14 +45,21 @@ class payment extends processor {
 		if ( ! $total ) {
 			$total = $this->data_object->get_value( 'cf-edd-pro-payment-total' );
 		}
-		$total = round( $total, 2 );
+
+		$pre_filtered = $total = round( $total, 2 );
+
+		$total =  apply_filters( 'cf_edd_pro_payment_total', $total, $config, $form, $proccesid );
+		$total = edd_sanitize_amount( $total );
+		if( $pre_filtered != $total ){
+			\Caldera_Forms::set_field_data( cf_edd_pro_find_by_magic_slug( $config[ 'cf-edd-pro-payment-total' ], $form ), $total, $form );
+		}
 
 		$payment_details[ 'user_info' ] = $this->make_user_info();
 		if( 'on' == $this->data_object->get_value( 'cf-edd-use-bundle-builder' ) ){
 			$bundler = true;
 			$download_id = $this->get_bundle_id_from_transdata( $proccesid );
 			$payment_id = $this->get_payment_id_from_transdata( $proccesid );
-			if( false == $download_id ){
+			if( ! $download_id ){
 				$this->data_object->add_error( __( 'EDD Payment processor could not detect bundle properly (download id)', 'cf-edd-pro' ) );
 			}
 			if( false == $payment_id ){
