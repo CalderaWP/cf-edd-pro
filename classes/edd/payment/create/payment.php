@@ -150,15 +150,20 @@ abstract  class payment {
 		}
 
 		if ( ! empty( $downloads ) ) {
-			foreach ( $downloads as $download ) {
+			foreach ( $downloads as $download_id ) {
 
 				/**
 				 * Filter arguments passed to EDD_Payment->add_download()
 				 *
 				 * @since 0.0.2
+				 *
+				 * @param array $args Arguments to pass to EDD_Payment->add_download()
+				 * @param array $downloads The downloads of payment
+				 * @param int $download_id Id of download to be added
+				 * @param int|float $total Total charge for payment
 				 */
-				$args = apply_filters( 'cf_edd_pro_add_download_to_payment_args', [], $downloads );
-				$payment->add_download( trim( $download ), $args );
+				$args = apply_filters( 'cf_edd_pro_add_download_to_payment_args', [], $downloads, $download_id, $total );
+				$payment->add_download( trim( $download_id ), $args );
 			}
 		}
 
