@@ -100,6 +100,17 @@ function CFEDDProDynPrice(config, $) {
         });
     };
 
+    /**
+     * Reset the WP nonce
+     *
+     * @since 1.1.0
+     *
+     * @param {String} nonce
+     */
+    this.setWPNonce = function (nonce) {
+        config.nonce = nonce;
+    };
+
     //On load bind and get price
     this.bindHandlers();
     this.getPrice();

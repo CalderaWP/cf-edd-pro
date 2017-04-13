@@ -2,8 +2,12 @@ jQuery( function($){
     /** Init discount code check **/
     var $fields = $( "input[data-edd-discount]" );
     if( $fields.length ){
+        if( undefined ==  window.cf_edd_pro_discount ){
+            window.cf_edd_pro_discount = {};
+        }
+
         $fields.each( function( i, feild){
-            new CFEDDProDiscountField( $( feild ).data( 'edd-discount'), $ );
+            window.cf_edd_pro_discount[ feild ] = new CFEDDProDiscountField( $( feild ).data( 'edd-discount'), $ );
         });
     }
 
@@ -113,6 +117,30 @@ function CFEDDProDiscountField( config, $ ) {
 
 
     };
+
+    /**
+     * Reset the WP nonce
+     *
+     * @since 1.1.0
+     *
+     * @param {String} nonce
+     */
+    this.setWPNonce = function (nonce) {
+        config.rest_nonce = nonce;
+    };
+
+    /**
+     * Reset the discount nonce
+     *
+     * @since 1.1.0
+     *
+     * @param {String} nonce
+     */
+    this.setNonce = function (nonce) {
+        config.nonce = nonce;
+    };
+
+
 
     /**
      * Remove error or success report
@@ -227,16 +255,22 @@ function CFEDDProDiscountField( config, $ ) {
             cartItems: cartItems,
             form: config.form
         } );
+
+        var data = {
+            total: getPrice(),
+            code: getCode(),
+            nonce: config.nonce,
+            form: config.form,
+            items: cartItems
+        };
+
+        if( config.hasOwnProperty( 'rest_nonce' ) && '' != config.rest_nonce ){
+            data.rest_nonce = config.rest_nonce;
+        }
+
         $.ajax({
             url: config.url,
-            data: {
-                total: getPrice(),
-                code: getCode(),
-                nonce: config.nonce,
-                _wpnonce: config.rest_nonce,
-                form: config.form,
-                items: cartItems
-            },
+            data: data,
             success: function (r,status,xhr) {
                 if( r.hasOwnProperty( 'amount' ) && r.hasOwnProperty( 'type' ) ){
                     discount.amount = r.amount;

@@ -21,7 +21,7 @@ class field {
 		add_filter( 'caldera_forms_get_field_types', [ $this, 'register' ] );
 		add_filter( 'cf_edd_pro_discount_api_permissions', [ $this, 'api_permissions' ], 10, 2 );
 		add_filter( 'caldera_forms_field_attributes', [ $this, 'filter_attrs' ], 10, 3 );
-		add_filter( 'cf_edd_pro_payment_total', [ $this, 'filter_price' ], 10, 3 );
+		//add_filter( 'cf_edd_pro_payment_total', [ $this, 'filter_price' ], 10, 3 );
 	}
 
 	public function register( $fields ){
@@ -71,14 +71,18 @@ class field {
 		if( ! $discount->get_ID() ){
 			return $value;
 		}
-		$price = \Caldera_Forms::get_field_data( $this->get_price_field( $field, $form ), $form );
+		$price_field = $this->get_price_field( $field, $form );
+		$price = \Caldera_Forms::get_field_data( $price_field, $form );
 		if( $discount->check_valid( get_current_user_id() ) ) {
 			$this->price = $value = round( $discount->get_discounted_amount( $price ) );
+			\Caldera_Forms::set_field_data( $price_field, $value, $form );
 		}
+
 		return $value;
 	}
 
 	public function filter_price(  $total, $config, $form ){
+
 		if( ! is_null( $this->price ) ){
 			return $this->price;
 		}
@@ -86,8 +90,13 @@ class field {
 	}
 
 	public function api_permissions( $allowed, $request ){
-		if( ! empty( $request[ 'nonce'] ) ){
+		if( ! empty( $request[ 'nonce'] ) && ! $allowed ){
 			$allowed = wp_verify_nonce( $request[ 'nonce' ], $this->nonce_action( ) );
+
+		}
+
+		if( ! $allowed ){
+			$allowed = wp_verify_nonce( 'wp_rest', $request[ '_wpnonce' ] );
 		}
 
 		return $allowed;
@@ -112,7 +121,7 @@ class field {
 	}
 
 	protected function nonce_action( ){
-		return 'cf_edd_discount';
+		return nonces::nonce_action();
 	}
 
 	/**
@@ -125,13 +134,13 @@ class field {
 		$config = [
 			'field'      => $field[ 'ID'],
 			'form'       => $form[ 'ID'],
-			'nonce'      => wp_create_nonce( $this->nonce_action() ),
 			'url'        => \Caldera_Forms_API_Util::url( 'processors/edd/discount' ),
-			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
 			'id_attr'    => \Caldera_Forms_Field_Util::get_base_id( $field, null, $form ),
 			'price_field' => $this->get_price_field( $field, $form ),
 			'form_count' =>  \Caldera_Forms_Render_Util::get_current_form_count(),
 		];
+
+		$config = array_merge( $config, nonces::create() );
 
 		return $config;
 	}
