@@ -74,8 +74,9 @@ class field {
 		$price_field = $this->get_price_field( $field, $form );
 		$price = \Caldera_Forms::get_field_data( $price_field, $form );
 		if( $discount->check_valid( get_current_user_id() ) ) {
-			$this->price = $value = round( $discount->get_discounted_amount( $price ) );
-			\Caldera_Forms::set_field_data( $price_field, $value, $form );
+			$this->price = round( $discount->get_discounted_amount( $price ) );
+			\Caldera_Forms::set_field_data( $price_field, $this->price, $form );
+			$discount->increase_usage();
 		}
 
 		return $value;
