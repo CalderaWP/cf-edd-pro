@@ -96,7 +96,7 @@ class discount extends \EDD_Discount {
 					// Default back to true
 					$return = true;
 					foreach ( $product_reqs as $download_id ) {
-						if ( ! in_array( $download_id, $product_reqs ) ) {
+						if ( ! in_array( $download_id, $items ) ) {
 							$return = false;
 							break;
 						}
