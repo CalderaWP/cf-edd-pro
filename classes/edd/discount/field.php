@@ -138,7 +138,7 @@ class field {
 			return $value;
 		}
 
-		if( ! is_null( ! $this->price ) ){
+		if( ! is_null( $this->price ) ){
 			$this->apply_discount( $field, $form );
 		}
 
