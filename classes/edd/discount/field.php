@@ -119,6 +119,17 @@ class field {
 			$price = \Caldera_Forms::get_field_data( $price_field, $form );
 
 			/**
+			 * Items to check discount against
+			 *
+			 * @since 1.1.0
+			 *
+			 * @param array $items
+			 * @param \calderawp\cfedd\edd\discount\discount $discount
+			 * @param array $field Field config
+			 * @param array $form Form config
+			 */
+			$items = apply_filters( 'cf_edd_pro_discount_items', [], $discount, $field, $form );
+			/**
 			 * Change if discount is valid
 			 *
 			 * @since 1.1.0
@@ -128,8 +139,8 @@ class field {
 			 * @param array $field Field config
 			 * @param array $form Form config
 			 */
-			$is_valid = apply_filters( 'cf_edd_pro_discount_valid', $discount->check_valid( get_current_user_id() ), $discount, $field, $form ) ;
-			if( $is_valid  ) {
+			$is_valid = apply_filters( 'cf_edd_pro_discount_valid', $discount->check_valid( $items, get_current_user_id(), $price ), $discount, $field, $form ) ;
+			if( ! is_wp_error( $is_valid )  ) {
 				$this->price = round( $discount->get_discounted_amount( $price ) );
 				$discount->increase_usage();
 			}

@@ -135,32 +135,15 @@ class endpoint  implements \Caldera_Forms_API_Route {
 	 */
 	protected function check_code( \WP_REST_Request $request, discount $discount )
 	{
-		if ( ! $discount->get_ID() ) {
-			return rest_ensure_response( new \WP_Error( 'not-found', __( 'Discount code not found.', 'cf-edd-pro' ) ) );
-
-		}
-
-		if ( ! $discount->is_started( false ) ) {
-			return rest_ensure_response( new \WP_Error( 'not-started', __( sprintf( 'Discount code can not be used until.', $this->start ), 'cf-edd-pro' ) ) );
-		}
-
-		if ( $discount->is_expired( false ) ) {
-			return rest_ensure_response( new \WP_Error( 'expired', __( 'Discount code is expired.', 'cf-edd-pro' ) ) );
-		}
-
-		if ( $discount->is_maxed_out( false ) ) {
-			return rest_ensure_response( new \WP_Error( 'maxed-out', __( 'Discount has been used too many times.', 'cf-edd-pro' ) ) );
-		}
-
-		if ( ! $discount->check_price( $request[ 'price' ] ) ) {
-			return rest_ensure_response( new \WP_Error( 'min-price-not-met', __( 'Discount minimum price not met.', 'cf-edd-pro' ) ) );
+		$items = $request->get_param( 'items' );
+		$price = $request->get_param( 'price' );
+		$valid = $discount->check_valid( $items, get_current_user_id(), $price );
+		if( is_wp_error( $valid ) ){
+			return rest_ensure_response( $valid );
 		}
 
 
-		if ( ! $discount->check_requirements( $request->get_param( 'items') ) ) {
-			return rest_ensure_response( new \WP_Error( 'requirements-not-met', __( 'Discount requirements are not met.', 'cf-edd-pro' ) ) );
-		}
-
+		do_action( 'cf_edd_pro_discount_validated_via_api', $discount, $items, $price );
 		return rest_ensure_response( [
 			'message' => __( 'Discount code applied', 'cf-edd-pro' ),
 			'amount' => $discount->get_amount(),

@@ -27,6 +27,60 @@ class discount extends \EDD_Discount {
 	}
 
 	/**
+	 * Check if code is valid
+	 *
+	 * @param array $items
+	 * @param null $user
+	 * @param null $price
+	 *
+	 * @return bool|\WP_Error
+	 */
+	public function check_valid( array $items = [], $user = null, $price = null ){
+		if ( ! $this->get_ID() ) {
+			return new \WP_Error( 'not-found', __( 'Discount code not found.', 'cf-edd-pro' ) );
+		}
+
+		if( null === $user ){
+			$user = get_user_by( 'ID', get_current_user_id() );
+			if( $user ){
+				$user = $user->user_email;
+			}
+		}
+
+		if( ! is_email( $user ) ){
+			$user = null;
+		}
+
+		if( $this->is_used( $user, false ) ){
+			return new \WP_Error( 'used', __( 'This discount has already been redeemed.', 'cf-edd-pro' ) );
+		}
+
+		if ( ! $this->is_started( false ) ) {
+			return new \WP_Error( 'not-started', __( sprintf( 'Discount code can not be used until.', $this->start ), 'cf-edd-pro' ) );
+		}
+
+		if ( $this->is_expired( false ) ) {
+			return new \WP_Error( 'expired', __( 'Discount code is expired.', 'cf-edd-pro' ) );
+		}
+
+
+		if ( $this->is_maxed_out( false ) ) {
+			return  new \WP_Error( 'maxed-out', __( 'Discount has been used too many times.', 'cf-edd-pro' ) );
+		}
+
+		if ( ! $this->check_price( $price ) ) {
+			return new \WP_Error( 'min-price-not-met', __( 'Discount minimum price not met.', 'cf-edd-pro' ) );
+		}
+
+		if ( ! $this->check_requirements( $items ) ) {
+			return  new \WP_Error( 'requirements-not-met', __( 'Discount requirements are not met.', 'cf-edd-pro' )  );
+		}
+
+		return true;
+
+	}
+
+	/**
 	 * Check discount against an array of Download IDs
 	 *
 	 * @since 1.1.0
@@ -38,7 +92,7 @@ class discount extends \EDD_Discount {
 	 *
 	 * @return bool
 	 */
-	public function check_valid($user = '', array $items = [], $price = 0.00, $update = false ){
+	public function _check_valid($user = '', array $items = [], $price = 0.00, $update = false ){
 		$set_error = false;
 		$return = false;
 		$user = trim( $user );
