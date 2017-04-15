@@ -13,6 +13,10 @@ jQuery( function($){
 
     /** If dynamic pricer is being used apply those downloads to discount code check **/
     $( document ).on( 'cf.edd.cartItems', function (e,obj) {
+        if( true === obj.dirty ){
+            return;
+        }
+
         var form = obj.form,
             downloads;
         if( undefined != window.cf_edd_pro && undefined != window.cf_edd_pro[ form ] ){
@@ -253,7 +257,8 @@ function CFEDDProDiscountField( config, $ ) {
         $( document ).trigger( 'cf.edd.cartItems', {
             self: self,
             cartItems: cartItems,
-            form: config.form
+            form: config.form,
+            dirty:false
         } );
 
         var data = {

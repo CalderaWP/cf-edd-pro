@@ -95,19 +95,70 @@ class field {
 	 * @return float|mixed;
 	 */
 	public function handler( $value, $field, $form){
-		$discount = discount::factory( $value );
-		if( ! $discount->get_ID() ){
+		/**
+		 * Change which discount is used
+		 *
+		 * If return is a calderawp\cfedd\edd\discount\discount then that object is used to verify/apply discount
+		 * If return is a float, that amount is deducted from price
+		 * If return is any other type, no discount is applied
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param \calderawp\cfedd\edd\discount\discount $discount
+		 * @param string $value The discount code used in form
+		 * @param array $field Field config
+		 * @param array $form Form config
+		 */
+		$discount = apply_filters( 'cf_edd_pro_discount_get', discount::factory( $value ), $value, $field, $form );
+		if( is_float( $discount ) ){
+			$this->price = $discount;
+		}elseif( ! $discount instanceof discount  || ! $discount->get_ID() ){
+			return $value;
+		}elseif( $discount instanceof discount ){
+			$price_field = $this->get_price_field( $field, $form );
+			$price = \Caldera_Forms::get_field_data( $price_field, $form );
+
+			/**
+			 * Change if discount is valid
+			 *
+			 * @since 1.1.0
+			 *
+			 * @param bool $is_valid Is discount valid?
+			 * @param \calderawp\cfedd\edd\discount\discount $discount
+			 * @param array $field Field config
+			 * @param array $form Form config
+			 */
+			$is_valid = apply_filters( 'cf_edd_pro_discount_valid', $discount->check_valid( get_current_user_id() ), $discount, $field, $form ) ;
+			if( $is_valid  ) {
+				$this->price = round( $discount->get_discounted_amount( $price ) );
+				$discount->increase_usage();
+			}
+
+		}else{
 			return $value;
 		}
-		$price_field = $this->get_price_field( $field, $form );
-		$price = \Caldera_Forms::get_field_data( $price_field, $form );
-		if( $discount->check_valid( get_current_user_id() ) ) {
-			$this->price = round( $discount->get_discounted_amount( $price ) );
-			\Caldera_Forms::set_field_data( $price_field, $this->price, $form );
-			$discount->increase_usage();
+
+		if( ! is_null( ! $this->price ) ){
+			$this->apply_discount( $field, $form );
 		}
 
 		return $value;
+
+	}
+
+	/**
+	 * Apply discount
+	 *
+	 * Must set $this->price first!
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $field Field config
+	 * @param array $form Form config
+	 */
+	protected function apply_discount( $field, $form ){
+		$price_field = $this->get_price_field( $field, $form );
+		\Caldera_Forms::set_field_data( $price_field, $this->price, $form );
 	}
 
 
