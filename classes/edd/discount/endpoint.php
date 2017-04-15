@@ -142,7 +142,15 @@ class endpoint  implements \Caldera_Forms_API_Route {
 			return rest_ensure_response( $valid );
 		}
 
-
+		/**
+		 * Runs after code is checked via API
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param \calderawp\cfedd\edd\discount\discount $discount
+		 * @param array $items Downloads "in cart" that were checked
+		 * @param string|float|int $price Price of "cart" to check
+		 */
 		do_action( 'cf_edd_pro_discount_validated_via_api', $discount, $items, $price );
 		return rest_ensure_response( [
 			'message' => __( 'Discount code applied', 'cf-edd-pro' ),
