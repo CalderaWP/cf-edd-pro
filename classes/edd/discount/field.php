@@ -2,7 +2,6 @@
 
 
 namespace calderawp\cfedd\edd\discount;
-use calderawp\eddBundleUpdates\handlers\email;
 
 
 /**
@@ -17,13 +16,29 @@ class field {
 	/** @var string  */
 	protected $slug = 'edd-discount';
 
+	/**
+	 * Add hooks for this class to function
+	 *
+	 * @since 1.1.0
+	 */
 	public function add_hooks(){
 		add_filter( 'caldera_forms_get_field_types', [ $this, 'register' ] );
 		add_filter( 'cf_edd_pro_discount_api_permissions', [ $this, 'api_permissions' ], 10, 2 );
 		add_filter( 'caldera_forms_field_attributes', [ $this, 'filter_attrs' ], 10, 3 );
-		//add_filter( 'cf_edd_pro_payment_total', [ $this, 'filter_price' ], 10, 3 );
 	}
 
+
+	/**
+	 * Register the field type
+	 *
+	 * @since 1.1.0
+	 *
+	 * @uses "caldera_forms_get_field_types"
+	 *
+	 * @param array $fields
+	 *
+	 * @return mixed
+	 */
 	public function register( $fields ){
 		$fields[  $this->slug ] = [
 			'field' => __( 'EDD Discount', 'cf-edd-pro' ),
@@ -47,6 +62,15 @@ class field {
 		return $fields;
 	}
 
+	/**
+	 * Add data attributes to field
+	 *
+	 * Inlines the config as JSON
+	 *
+	 * @uses "caldera_forms_field_attributes" filter
+	 *
+	 * @since 1.5.0
+	 */
 	public function filter_attrs( $attrs, $field, $form ){
 		if( $this->slug == \Caldera_Forms_Field_Util::get_type( $field, $form ) ){
 			$attrs['data-' . $this->slug ] = wp_json_encode( $this->config( $form, $field ) );
@@ -60,6 +84,10 @@ class field {
 
 
 	/**
+	 * Handler for discount code class
+	 *
+	 * @since 1.1.0
+	 *
 	 * @param string $value The field value
 	 * @param array $field Field config
 	 * @param array $form Form config
@@ -82,17 +110,22 @@ class field {
 		return $value;
 	}
 
-	public function filter_price(  $total, $config, $form ){
 
-		if( ! is_null( $this->price ) ){
-			return $this->price;
-		}
-		return $total;
-	}
-
+	/**
+	 * Use nonce to check API permissions on discount code check
+	 *
+	 * @since 1.1.0
+	 *
+	 * @uses "cf_edd_pro_discount_api_permissions" filter
+	 *
+	 * @param bool $allowed
+	 * @param \WP_REST_Request $request
+	 *
+	 * @return false|int
+	 */
 	public function api_permissions( $allowed, $request ){
 		if( ! empty( $request[ 'nonce'] ) && ! $allowed ){
-			$allowed = wp_verify_nonce( $request[ 'nonce' ], $this->nonce_action( ) );
+			$allowed = wp_verify_nonce( $request[ 'nonce' ], nonces::nonce_action() );
 
 		}
 
@@ -103,6 +136,11 @@ class field {
 		return $allowed;
 	}
 
+	/**
+	 * Add inline JS for handling discount code display
+	 * 
+	 * @since 1.1.0
+	 */
 	protected function add_inline_js( $form, $field ){
 		$field_id = $field[ 'ID' ];
 		$form_id = $form[ 'ID'];
@@ -121,11 +159,11 @@ class field {
 		}
 	}
 
-	protected function nonce_action( ){
-		return nonces::nonce_action();
-	}
-
 	/**
+	 * Create config for field
+	 *
+	 * @since 1.1.0
+	 *
 	 * @param $form
 	 * @param $field
 	 *
@@ -146,6 +184,16 @@ class field {
 		return $config;
 	}
 
+	/**
+	 * Get the price field
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $field Config for discount code field
+	 * @param array $form Form config
+	 *
+	 * @return bool|mixed
+	 */
 	protected function get_price_field( $field, $form ){
 		if( ! empty( $field[ 'config' ][ 'price_field' ] ) ){
 			$field = cf_edd_pro_find_by_magic_slug( $field[ 'config' ][ 'price_field' ], $form  );
