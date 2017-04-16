@@ -169,7 +169,7 @@ class field {
 	 */
 	protected function apply_discount( $field, $form ){
 		$price_field = $this->get_price_field( $field, $form );
-		\Caldera_Forms::set_field_data( $price_field, $this->price, $form );
+		\Caldera_Forms::set_field_data( $price_field, edd_sanitize_amount( $this->price ), $form );
 	}
 
 
