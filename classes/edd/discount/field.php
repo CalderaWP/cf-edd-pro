@@ -141,7 +141,7 @@ class field {
 			 */
 			$is_valid = apply_filters( 'cf_edd_pro_discount_valid', $discount->check_valid( $items, get_current_user_id(), $price ), $discount, $field, $form ) ;
 			if( ! is_wp_error( $is_valid )  ) {
-				$this->price = round( $discount->get_discounted_amount( $price ) );
+				$this->price = round( $discount->get_discounted_amount( $price ), 2, PHP_ROUND_HALF_UP );
 				$discount->increase_usage();
 			}
 
